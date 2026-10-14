@@ -22,13 +22,13 @@
     a:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
     .page { min-height: 100vh; background: linear-gradient(112deg, #667a91 0%, #475b74 42%, #293850 100%); }
     .container { width: 84%; max-width: 1480px; margin-inline: auto; }
-    .site-header { background: var(--paper); color: #293850; }
+    .site-header { background: transparent; color: var(--paper); }
     .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 100px; }
     .site-name { font-family: var(--serif); font-size: 25px; font-weight: 600; text-decoration: none; white-space: nowrap; }
     .site-nav { display: flex; align-items: center; justify-content: flex-end; gap: 40px; }
     .site-nav a { padding-block: 8px; border-bottom: 1px solid transparent; font-size: 18px; letter-spacing: .1em; text-decoration: none; white-space: nowrap; transition: border-color .2s, color .2s; }
-    .site-nav a:hover, .site-nav a[aria-current="location"] { border-bottom-color: #c57c68; color: #915340; }
-    .site-header a:focus-visible { outline-color: #915340; }
+    .site-nav a:hover, .site-nav a[aria-current="location"] { border-bottom-color: var(--accent); color: var(--accent); }
+    .site-header a:focus-visible { outline-color: var(--accent); }
     .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 56px; min-height: 680px; padding-block: 52px 92px; align-items: start; }
     .eyebrow { margin: 0; color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: .12em; }
     h1 { margin: 42px 0 34px; font-family: var(--serif); font-size: clamp(48px, 5.35vw, 96px); font-weight: 500; line-height: 1.32; letter-spacing: .015em; }
@@ -87,6 +87,7 @@
   </style>
 </head>
 <body>
+  <div class="page" id="top">
   <header class="site-header">
     <div class="container header-inner">
       <a class="site-name" href="#top">我的作品集</a>
@@ -97,7 +98,7 @@
       </nav>
     </div>
   </header>
-  <main class="page" id="top">
+  <main>
     <div class="container">
       <section class="hero" aria-labelledby="hero-title">
         <div>
@@ -137,6 +138,7 @@
       <footer><span>我的作品集 · 持續探索，持續累積。</span><a href="#top">回到頂端 ↑</a></footer>
     </div>
   </main>
+  </div>
   <script>
     const navLinks = Array.from(document.querySelectorAll('.site-nav a'));
     const sections = [document.querySelector('.hero'), document.getElementById('about'), document.getElementById('projects')];
