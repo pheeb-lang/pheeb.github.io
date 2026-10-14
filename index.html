@@ -1,43 +1,120 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#293850">
+  <meta name="description" content="我的作品集：分享專案、研究與學習成果。">
   <title>我的作品集</title>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 0 24px;
-      line-height: 1.8;
-      color: #222;
-      background: #fafafa;
+    :root {
+      color-scheme: dark;
+      --paper: #f7f3ec;
+      --muted: #c7d0de;
+      --accent: #f1c1b1;
+      --line: rgba(247, 243, 236, .22);
+      --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", serif;
     }
-    article {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 24px;
-      margin: 20px 0;
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--paper); background: #293850; font-family: "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
+    .page { min-height: 100vh; background: linear-gradient(112deg, #667a91 0%, #475b74 42%, #293850 100%); }
+    .container { width: 84%; max-width: 1480px; margin-inline: auto; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 56px; min-height: 680px; padding-block: 52px 92px; align-items: start; }
+    .eyebrow { margin: 0; color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: .12em; }
+    h1 { margin: 42px 0 34px; font-family: var(--serif); font-size: clamp(48px, 5.35vw, 96px); font-weight: 500; line-height: 1.32; letter-spacing: .015em; }
+    h1 span { display: block; }
+    .intro { max-width: 670px; margin: 0; color: var(--muted); font-size: 20px; font-weight: 600; line-height: 2; }
+    .hero-link { display: inline-flex; gap: 42px; align-items: center; margin-top: 36px; padding-bottom: 8px; border-bottom: 1px solid var(--accent); text-decoration: none; font-size: 14px; letter-spacing: .08em; transition: color .2s, gap .2s; }
+    .hero-link:hover { color: var(--accent); gap: 52px; }
+    .timeline { padding-top: 13px; text-align: right; user-select: none; }
+    .year { font-family: Georgia, "Times New Roman", serif; font-size: clamp(100px, 9.5vw, 170px); line-height: 1.25; font-weight: 400; color: transparent; -webkit-text-stroke: 1.5px rgba(241, 193, 177, .65); }
+    .timeline-line { width: 172px; height: 5px; margin: 80px 0 52px auto; background: var(--accent); border-radius: 1px; }
+    .now { font-family: Georgia, "Times New Roman", serif; font-size: clamp(100px, 9.5vw, 170px); font-weight: 700; line-height: 1; }
+    .section { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 56px; padding-block: 56px 64px; border-top: 1px solid var(--line); scroll-margin-top: 30px; }
+    h2 { margin: 16px 0 0; font-family: var(--serif); font-size: 36px; font-weight: 500; line-height: 1.4; }
+    .about-copy { max-width: 780px; }
+    .about-copy h3 { margin: 0 0 16px; font-family: var(--serif); font-size: 30px; font-weight: 500; }
+    .about-copy p { margin: 0; font-size: 18px; color: var(--muted); }
+    .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    article { padding-top: 18px; border-top: 1px solid rgba(241, 193, 177, .6); }
+    .project-number { color: var(--accent); font-family: Georgia, serif; font-size: 18px; }
+    article h3 { margin: 24px 0 14px; font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.5; }
+    article p { margin: 0; color: var(--muted); font-size: 16px; }
+    footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; letter-spacing: .08em; }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    @media (min-width: 1500px) { .hero { min-height: 720px; grid-template-columns: minmax(0, 1fr) 430px; } }
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: minmax(0, 1fr) 250px; gap: 28px; min-height: 580px; }
+      .intro { font-size: 18px; }
+      .section { grid-template-columns: 180px minmax(0, 1fr); gap: 32px; }
+      .timeline-line { width: 120px; margin-top: 72px; }
+      .projects { gap: 28px; }
     }
+    @media (max-width: 720px) {
+      .container { width: auto; margin-inline: 24px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-block: 36px 48px; gap: 44px; }
+      .eyebrow { font-size: 12px; }
+      h1 { margin-block: 30px 24px; font-size: clamp(32px, 6.7vw, 48px); line-height: 1.5; }
+      .intro { font-size: 16px; font-weight: 400; }
+      .hero-link { margin-top: 26px; }
+      .timeline { display: flex; align-items: center; gap: 20px; padding: 0; text-align: left; }
+      .year, .now { font-size: clamp(42px, 12vw, 82px); }
+      .timeline-line { flex: 1; width: auto; height: 3px; margin: 0; }
+      .section { grid-template-columns: 1fr; gap: 28px; padding-block: 36px 44px; }
+      h2 { margin-top: 10px; font-size: 30px; }
+      .about-copy h3 { font-size: 25px; }
+      .about-copy p { font-size: 16px; }
+      .projects { grid-template-columns: 1fr; gap: 34px; }
+      article h3 { margin-top: 16px; font-size: 25px; }
+      footer { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hero-link { transition: none; } }
   </style>
 </head>
 <body>
-  <h1>你好，我是你的名字</h1>
-  <p>歡迎來到我的作品集。這裡分享我的專案與學習成果。</p>
-
-  <h2>關於我</h2>
-  <p>在這裡介紹你的專長、背景與興趣。</p>
-
-  <h2>我的作品</h2>
-  <article>
-    <h3>作品一：班級管理系統</h3>
-    <p>介紹專案用途、功能與使用的技術。</p>
-  </article>
-  <article>
-    <h3>作品二：研究專案</h3>
-    <p>介紹研究主題與成果。</p>
-  </article>
+  <main class="page" id="top">
+    <div class="container">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <p class="eyebrow">PORTFOLIO · 我的作品集</p>
+          <h1 id="hero-title"><span>分享專案，</span><span>也記錄學習與成長。</span></h1>
+          <p class="intro">歡迎來到我的作品集。這裡分享我的專案與學習成果，記錄每一次探索、實作與累積。</p>
+          <a class="hero-link" href="#projects">探索我的作品 <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="timeline" aria-hidden="true">
+          <div class="year">2026</div>
+          <div class="timeline-line"></div>
+          <div class="now">NOW</div>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="about-title">
+        <header><p class="eyebrow">ABOUT · 關於我</p><h2 id="about-title">從好奇開始。</h2></header>
+        <div class="about-copy">
+          <h3>你好，我是你的名字</h3>
+          <p>在這裡介紹你的專長、背景與興趣。</p>
+        </div>
+      </section>
+      <section class="section" id="projects" aria-labelledby="projects-title">
+        <header><p class="eyebrow">SELECTED WORK · 精選作品</p><h2 id="projects-title">我的作品</h2></header>
+        <div class="projects">
+          <article>
+            <span class="project-number">01 / PROJECT</span>
+            <h3>作品一：班級管理系統</h3>
+            <p>介紹專案用途、功能與使用的技術。</p>
+          </article>
+          <article>
+            <span class="project-number">02 / RESEARCH</span>
+            <h3>作品二：研究專案</h3>
+            <p>介紹研究主題與成果。</p>
+          </article>
+        </div>
+      </section>
+      <footer><span>我的作品集 · 持續探索，持續累積。</span><a href="#top">回到頂端 ↑</a></footer>
+    </div>
+  </main>
 </body>
 </html>
