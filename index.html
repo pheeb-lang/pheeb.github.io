@@ -22,6 +22,13 @@
     a:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
     .page { min-height: 100vh; background: linear-gradient(112deg, #667a91 0%, #475b74 42%, #293850 100%); }
     .container { width: 84%; max-width: 1480px; margin-inline: auto; }
+    .site-header { background: var(--paper); color: #293850; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 100px; }
+    .site-name { font-family: var(--serif); font-size: 25px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .site-nav { display: flex; align-items: center; justify-content: flex-end; gap: 40px; }
+    .site-nav a { padding-block: 8px; border-bottom: 1px solid transparent; font-size: 18px; letter-spacing: .1em; text-decoration: none; white-space: nowrap; transition: border-color .2s, color .2s; }
+    .site-nav a:hover, .site-nav a[aria-current="location"] { border-bottom-color: #c57c68; color: #915340; }
+    .site-header a:focus-visible { outline-color: #915340; }
     .hero { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 56px; min-height: 680px; padding-block: 52px 92px; align-items: start; }
     .eyebrow { margin: 0; color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: .12em; }
     h1 { margin: 42px 0 34px; font-family: var(--serif); font-size: clamp(48px, 5.35vw, 96px); font-weight: 500; line-height: 1.32; letter-spacing: .015em; }
@@ -56,6 +63,10 @@
     }
     @media (max-width: 720px) {
       .container { width: auto; margin-inline: 24px; }
+      .header-inner { flex-wrap: wrap; gap: 12px; padding-block: 20px; min-height: auto; }
+      .site-name { font-size: 22px; }
+      .site-nav { width: 100%; justify-content: flex-end; gap: 24px; }
+      .site-nav a { font-size: 14px; letter-spacing: .05em; }
       .hero { grid-template-columns: 1fr; min-height: auto; padding-block: 36px 48px; gap: 44px; }
       .eyebrow { font-size: 12px; }
       h1 { margin-block: 30px 24px; font-size: clamp(32px, 6.7vw, 48px); line-height: 1.5; }
@@ -76,6 +87,16 @@
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="site-name" href="#top">我的作品集</a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="#top" aria-current="location">首頁</a>
+        <a href="#about">關於我</a>
+        <a href="#projects">代表專案</a>
+      </nav>
+    </div>
+  </header>
   <main class="page" id="top">
     <div class="container">
       <section class="hero" aria-labelledby="hero-title">
@@ -91,7 +112,7 @@
           <div class="now">NOW</div>
         </div>
       </section>
-      <section class="section" aria-labelledby="about-title">
+      <section class="section" id="about" aria-labelledby="about-title">
         <header><p class="eyebrow">ABOUT · 關於我</p><h2 id="about-title">從好奇開始。</h2></header>
         <div class="about-copy">
           <h3>你好，我是你的名字</h3>
@@ -107,14 +128,35 @@
             <p>介紹專案用途、功能與使用的技術。</p>
           </article>
           <article>
-            <span class="project-number">02 / RESEARCH</span>
-            <h3>作品二：研究專案</h3>
-            <p>介紹研究主題與成果。</p>
+            <span class="project-number">02 / PROJECT</span>
+            <h3>作品二：教室管理系統</h3>
+            <p>介紹專案用途、功能與使用的技術。</p>
           </article>
         </div>
       </section>
       <footer><span>我的作品集 · 持續探索，持續累積。</span><a href="#top">回到頂端 ↑</a></footer>
     </div>
   </main>
+  <script>
+    const navLinks = Array.from(document.querySelectorAll('.site-nav a'));
+    const sections = [document.querySelector('.hero'), document.getElementById('about'), document.getElementById('projects')];
+    let scheduled = false;
+    function updateNavigation() {
+      let current = 0;
+      sections.forEach((section, index) => {
+        if (section.getBoundingClientRect().top <= window.innerHeight * .4) current = index;
+      });
+      navLinks.forEach((link, index) => {
+        if (index === current) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+      scheduled = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scheduled) { scheduled = true; requestAnimationFrame(updateNavigation); }
+    }, { passive: true });
+    window.addEventListener('resize', updateNavigation);
+    updateNavigation();
+  </script>
 </body>
 </html>
