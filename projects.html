@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f3ec">
+  <meta name="description" content="代表專案：班級管理系統與教室管理系統。">
+  <title>代表專案｜我的作品集</title>
+  <style>
+    :root { color-scheme: light; --paper: #f7f3ec; --ink: #293850; --muted: #5d6a79; --accent: #995a46; --line: #d7cec3; --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", serif; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font-family: "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; }
+    .container { width: 84%; max-width: 1480px; margin-inline: auto; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 100px; }
+    .site-name { font-family: var(--serif); font-size: 25px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .site-nav { display: flex; align-items: center; justify-content: flex-end; gap: 40px; }
+    .site-nav a { padding-block: 8px; border-bottom: 1px solid transparent; font-size: 18px; letter-spacing: .1em; text-decoration: none; white-space: nowrap; }
+    .site-nav a:hover, .site-nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--accent); }
+    .intro { padding-block: 68px 64px; }
+    .eyebrow { margin: 0; color: var(--accent); font-size: 14px; font-weight: 700; letter-spacing: .12em; }
+    h1 { margin: 24px 0; font-family: var(--serif); font-size: clamp(44px, 5.35vw, 80px); font-weight: 500; line-height: 1.3; }
+    .intro p:last-child { margin: 0; color: var(--muted); font-size: 18px; }
+    .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; padding-bottom: 96px; }
+    article { padding-top: 24px; border-top: 1px solid var(--line); }
+    .project-number { color: var(--accent); font-family: Georgia, serif; font-size: 18px; letter-spacing: .05em; }
+    h2 { margin: 32px 0 18px; font-family: var(--serif); font-size: clamp(26px, 2.6vw, 38px); font-weight: 500; line-height: 1.5; }
+    article p { margin: 0; color: var(--muted); font-size: 17px; }
+    footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; letter-spacing: .08em; }
+    footer a { text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    @media (max-width: 720px) {
+      .container { width: auto; margin-inline: 24px; }
+      .header-inner { flex-wrap: wrap; gap: 12px; padding-block: 20px; min-height: auto; }
+      .site-name { font-size: 22px; }
+      .site-nav { width: 100%; justify-content: flex-end; gap: 24px; }
+      .site-nav a { font-size: 14px; letter-spacing: .05em; }
+      .intro { padding-block: 40px; }
+      .intro p:last-child { font-size: 16px; }
+      .projects { grid-template-columns: 1fr; gap: 40px; padding-bottom: 56px; }
+      h2 { margin-top: 20px; }
+      article p { font-size: 16px; }
+      footer { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <div class="container header-inner">
+      <a class="site-name" href="index.html">我的作品集</a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="index.html">首頁</a>
+        <a href="index.html#about">關於我</a>
+        <a href="projects.html" aria-current="page">代表專案</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">SELECTED WORK · 精選作品</p>
+      <h1 id="page-title">代表專案</h1>
+      <p>分享我的專案與實作成果。</p>
+    </section>
+    <section class="projects" aria-label="專案列表">
+      <article>
+        <span class="project-number">01 / PROJECT</span>
+        <h2>班級管理系統</h2>
+        <p>介紹專案用途、功能與使用的技術。</p>
+      </article>
+      <article>
+        <span class="project-number">02 / PROJECT</span>
+        <h2>教室管理系統</h2>
+        <p>介紹專案用途、功能與使用的技術。</p>
+      </article>
+    </section>
+  </main>
+  <footer class="container"><span>我的作品集 · 持續探索，持續累積。</span><a href="index.html">返回首頁 ↗</a></footer>
+</body>
+</html>
