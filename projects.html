@@ -19,12 +19,20 @@
     .site-nav { display: flex; align-items: center; justify-content: flex-end; gap: 40px; }
     .site-nav a { padding-block: 8px; border-bottom: 1px solid transparent; font-size: 18px; letter-spacing: .1em; text-decoration: none; white-space: nowrap; }
     .site-nav a:hover, .site-nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--accent); }
-    .intro { padding-block: 68px 64px; }
+    .intro { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: center; gap: clamp(40px, 7vw, 128px); padding-block: 68px 80px; }
     .eyebrow { margin: 0; color: var(--accent); font-size: 14px; font-weight: 700; letter-spacing: .12em; }
     h1 { margin: 24px 0; font-family: var(--serif); font-size: clamp(44px, 5.35vw, 80px); font-weight: 500; line-height: 1.3; }
-    .intro p:last-child { margin: 0; color: var(--muted); font-size: 18px; }
+    .intro-description { margin: 0; color: var(--muted); font-size: 18px; }
+    .project-directory { padding-top: 38px; }
+    .project-directory ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .project-directory li { border-bottom: 1px solid var(--line); }
+    .project-directory a { display: grid; grid-template-columns: 56px minmax(0, 1fr) 24px; align-items: center; gap: 20px; min-height: 76px; padding: 16px 20px 16px 0; text-decoration: none; font-size: 20px; transition: color .2s, background-color .2s; }
+    .directory-number { font-family: Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 700; }
+    .directory-arrow { color: var(--muted); font-size: 18px; text-align: right; }
+    .project-directory a:hover { color: var(--accent); background-color: rgba(153, 90, 70, .04); }
+    .project-directory a:hover .directory-arrow { color: var(--accent); }
     .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; padding-bottom: 96px; }
-    article { padding-top: 24px; border-top: 1px solid var(--line); }
+    article { padding-top: 24px; border-top: 1px solid var(--line); scroll-margin-top: 32px; }
     .project-number { color: var(--accent); font-family: Georgia, serif; font-size: 18px; letter-spacing: .05em; }
     h2 { margin: 32px 0 18px; font-family: var(--serif); font-size: clamp(26px, 2.6vw, 38px); font-weight: 500; line-height: 1.5; }
     article p { margin: 0; color: var(--muted); font-size: 17px; }
@@ -37,14 +45,17 @@
       .site-name { font-size: 22px; }
       .site-nav { width: 100%; justify-content: flex-end; gap: 24px; }
       .site-nav a { font-size: 14px; letter-spacing: .05em; }
-      .intro { padding-block: 40px; }
-      .intro p:last-child { font-size: 16px; }
+      .intro { grid-template-columns: 1fr; gap: 32px; padding-block: 40px 48px; }
+      .intro-description { font-size: 16px; }
+      .project-directory { padding-top: 0; }
+      .project-directory a { grid-template-columns: 40px minmax(0, 1fr) 20px; gap: 16px; min-height: 68px; padding-right: 8px; font-size: 18px; }
+      .directory-number { font-size: 22px; }
       .projects { grid-template-columns: 1fr; gap: 40px; padding-bottom: 56px; }
       h2 { margin-top: 20px; }
       article p { font-size: 16px; }
       footer { font-size: 11px; }
     }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .project-directory a { transition: none; } }
   </style>
 </head>
 <body id="top">
@@ -60,17 +71,25 @@
   </header>
   <main class="container">
     <section class="intro" aria-labelledby="page-title">
-      <p class="eyebrow">SELECTED WORK · 精選作品</p>
-      <h1 id="page-title">代表專案</h1>
-      <p>分享我的專案與實作成果。</p>
+      <div class="intro-copy">
+        <p class="eyebrow">PROJECTS · 代表專案</p>
+        <h1 id="page-title">代表專案</h1>
+        <p class="intro-description">分享我的專案與實作成果。</p>
+      </div>
+      <nav class="project-directory" aria-label="專案目錄">
+        <ol>
+          <li><a href="#class-management"><span class="directory-number">01</span><span>班級管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="#classroom-management"><span class="directory-number">02</span><span>教室管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
+        </ol>
+      </nav>
     </section>
     <section class="projects" aria-label="專案列表">
-      <article>
+      <article id="class-management">
         <span class="project-number">01 / PROJECT</span>
         <h2>班級管理系統</h2>
         <p>介紹專案用途、功能與使用的技術。</p>
       </article>
-      <article>
+      <article id="classroom-management">
         <span class="project-number">02 / PROJECT</span>
         <h2>教室管理系統</h2>
         <p>介紹專案用途、功能與使用的技術。</p>
