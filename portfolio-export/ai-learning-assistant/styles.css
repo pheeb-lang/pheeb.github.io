@@ -67,6 +67,11 @@
 
 /* Bootstrap headings use a tighter line height than body text. */
 :where([data-region="aihelper"]) .local-classgroup-aititle { line-height: 1.2; }
+:where([data-region="aihelper"]) .local-classgroup-demo-controls { margin-top: 1rem; }
+:where([data-region="aihelper"]) .local-classgroup-demo-controls button:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
 
 :where([data-region="aihelper"]).local-classgroup-aihelper {
     align-items: center;

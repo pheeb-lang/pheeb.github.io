@@ -1,5 +1,11 @@
 // Local demonstration data only; no requests, course retrieval, or personal analysis.
-export const mockSettings = Object.freeze({delayMs: 900});
+export const mockSettings = Object.freeze({delayMs: 900, playbackPauseMs: 1600});
+// Portfolio-only playback; questions follow the same response rules as visitor input.
+export const demoConversation = Object.freeze([
+    '網頁入門課程的作業要如何準備？',
+    '請解釋函式的概念',
+    '請幫我整理這週的學習重點'
+]);
 export const validationMessage = '問題不可為空白，且不得超過 2000 個字元。';
 export const mockErrorMessage = '模擬回覆暫時無法顯示，請稍後再試。（開發驗證）';
 

@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {init} from '../aihelper.js';
-import {askQuestion, scenarios, defaultReply, mockSettings, mockErrorMessage} from '../mock-responder.js';
+import {askQuestion, scenarios, defaultReply, mockSettings, mockErrorMessage, demoConversation} from '../mock-responder.js';
 
 class Element {
     constructor(tag = 'div') {
@@ -40,15 +40,18 @@ function fixture() {
     send.disabled = true;
     const messages = new Element();
     const video = new Element('a');
+    const playback = new Element('button');
+    const playbackStatus = new Element();
     const selectors = {
         '[data-region="input"]': input, '[data-action="send"]': send,
-        '[data-region="messages"]': messages, '[data-action="search-video"]': video
+        '[data-region="messages"]': messages, '[data-action="search-video"]': video,
+        '[data-action="play-demo"]': playback, '[data-region="demo-status"]': playbackStatus
     };
     root.querySelector = selector => selectors[selector];
     init(root);
     const type = text => { input.value = text; input.emit('input'); };
     const enter = options => input.emit('keydown', {key: 'Enter', ...options});
-    return {root, input, send, messages, video, type, enter};
+    return {root, input, send, messages, video, playback, playbackStatus, type, enter};
 }
 
 export async function runChecks() {
@@ -64,6 +67,7 @@ export async function runChecks() {
         const f = fixture();
         assert.equal(f.messages.children.length, 0);
         assert.equal(f.send.disabled, true);
+        assert.equal(f.playback.disabled, false);
         assert.equal(f.input.focused, true);
         init(f.root);
         assert.equal(f.send.listeners.click.length, 1);
@@ -157,6 +161,64 @@ export async function runChecks() {
         await assert.rejects(askQuestion('   '));
         await assert.rejects(askQuestion('中'.repeat(2001)));
         checks.push('Existing external-link query precedence/encoding, fresh page state and responder validation');
+
+        const g = fixture();
+        assert.equal(g.playback.disabled, false);
+        g.input.emit('compositionstart');
+        g.playback.emit('click');
+        assert.equal(g.messages.children.length, 0);
+        g.input.emit('compositionend');
+        g.type('尚未送出的草稿');
+        g.playback.emit('click');
+        assert.equal(g.playback.disabled, true);
+        assert.equal(g.messages.children[0].textContent, demoConversation[0]);
+        await settle();
+        assert.equal(g.messages.children.length, 2);
+        assert.equal(g.input.disabled, true);
+        assert.equal(g.send.disabled, true);
+        assert.equal(g.playback.disabled, true);
+        g.send.emit('click');
+        g.enter();
+        g.playback.emit('click');
+        assert.equal(g.messages.children.length, 2);
+        await new Promise(resolve => setTimeout(resolve,
+            (demoConversation.length - 1) * (mockSettings.delayMs + mockSettings.playbackPauseMs) + 100));
+        assert.equal(g.messages.children.length, 6);
+        for (let i = 0; i < demoConversation.length; i++) {
+            assert.equal(g.messages.children[i * 2].textContent, demoConversation[i]);
+        }
+        assert.equal(g.input.disabled, false);
+        assert.equal(g.input.value, '尚未送出的草稿');
+        assert.equal(g.send.disabled, false);
+        assert.equal(g.playback.disabled, false);
+        assert.match(g.playbackStatus.textContent, /完成/);
+        checks.push('Three-turn playback, reading pauses, draft restoration, composition and concurrent-action guards');
+
+        g.type('請解釋函式');
+        g.enter();
+        assert.equal(g.playback.disabled, true);
+        await settle();
+        assert.equal(g.messages.children.length, 8);
+        g.playback.emit('click');
+        await new Promise(resolve => setTimeout(resolve,
+            demoConversation.length * mockSettings.delayMs
+            + (demoConversation.length - 1) * mockSettings.playbackPauseMs + 100));
+        assert.equal(g.messages.children.length, 14);
+        assert.equal(g.playback.disabled, false);
+        checks.push('Visitor interaction after playback and replay append without clearing earlier conversation');
+
+        globalThis.location = {search: '?demo-error=1'};
+        const h = fixture();
+        h.type('錯誤前草稿');
+        h.playback.emit('click');
+        await settle();
+        assert.equal(h.messages.children.length, 2);
+        assert.equal(h.messages.children[1].textContent, mockErrorMessage);
+        assert.equal(h.input.disabled, false);
+        assert.equal(h.input.value, '錯誤前草稿');
+        assert.equal(h.playback.disabled, false);
+        assert.match(h.playbackStatus.textContent, /停止/);
+        checks.push('Playback stops on simulated error and restores draft and controls');
         return checks;
     } finally {
         if (previousDocument === undefined) { delete globalThis.document; }

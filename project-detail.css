@@ -47,7 +47,7 @@ h3 { margin: 0 0 12px; font-size: 21px; font-weight: 500; }
 .demo-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 14px 18px; background: #eee9e1; border: 1px solid var(--line); border-bottom: 0; border-radius: 6px 6px 0 0; font-size: 13px; }
 .demo-toolbar span { color: var(--muted); }
 .demo-toolbar a { color: var(--accent); }
-.classroom-demo-frame, .ai-learning-demo-frame, .class-course-people-demo-frame { display: block; width: 100%; height: 960px; border: 1px solid var(--line); border-radius: 0 0 6px 6px; background: #fff; }
+.classroom-demo-frame, .interactive-demo > iframe { display: block; box-sizing: border-box; width: 100%; max-width: 100%; height: 960px; border: 1px solid var(--line); border-radius: 0 0 6px 6px; background: #fff; }
 .feature-notes { margin-top: 24px; font-size: 14px; }
 .timeline { list-style: none; margin: 0; padding: 0; }
 .timeline li { padding: 0 0 28px 26px; border-left: 1px solid var(--line); position: relative; }

@@ -7,6 +7,7 @@
 - `styles.css` 主體：`moodle/public/local/classgroup/styles.css` 的 `Student AI helper` 區段；加入元件範圍與最小 Boost/Bootstrap 相容規則，保留原配色、尺寸、媒體查詢與動畫。
 - 最小相容樣式參考 `theme/boost/scss/bootstrap/_variables.scss`、`_reboot.scss`、`forms/_form-control.scss`、`_buttons.scss`、`theme/boost/scss/preset/default.scss`，未包含完整框架。
 - 模擬資料、說明及測試為此次匯出新增，採 GPL-3.0-or-later 隨同此衍生展示提供。
+- 後續依作品集需求新增「播放對話示範」控制、三輪自動播放與草稿保留；這些是靜態展示專用功能，不是原 Moodle 功能。
 
 根目錄 Moodle 的 `COPYING.txt` 原文附於此目錄。Moodle 採 GNU GPL 第 3 版或更新版本；此衍生展示保留相同授權。所讀取的 `local_classgroup` 頁面、JS、CSS 本身未附獨立作者或授權標頭；沒有另行宣稱它們是 MIT 或專有授權。公開前應由專案擁有者確認客製程式與品牌資產的公開權利。未攜入校名、公司標誌、使用者資料或 Moodle 全站導覽。
 
