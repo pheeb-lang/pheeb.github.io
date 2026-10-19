@@ -24,7 +24,7 @@
     <dl class="project-meta">
       <div><dt>角色</dt><dd>系統全端開發者(實習)</dd></div>
       <div><dt>任職公司</dt><dd>資展國際</dd></div>
-      <div><dt>使用工具</dt><dd>待補充<small>設計工具與開發技術</small></dd></div>
+      <div><dt>使用技術</dt><dd>待補充<small>設計工具與開發技術</small></dd></div>
       <div><dt>網站</dt><dd>公司內部系統<small>不對外開放</small></dd></div>
     </dl>
     <figure>
@@ -37,9 +37,9 @@
     <section class="detail-section" id="overview" aria-labelledby="overview-title">
       <header><p class="eyebrow">01 / OVERVIEW</p><h2 id="overview-title">專案概況</h2></header>
       <div class="section-content"><dl class="summary-list">
-        <div><dt>背景與問題</dt><dd>待補充：原本的作業方式、使用者遇到的困難，以及專案開始的原因。</dd></div>
-        <div><dt>使用對象與目標</dt><dd>待補充：主要使用者是誰？希望協助他們完成什麼工作？</dd></div>
-        <div><dt>我的貢獻</dt><dd>待補充：你實際負責的功能、設計或開發內容，以及與團隊的分工。</dd></div>
+        <div><dt>背景與問題</dt><dd>教室管理需要同時掌握場地預約、課程安排與講師指派，但原有預約資料與圖片課表分散，難以直接對照各教室、日期及時段的使用情形。教室使用率也需要考慮開放時間、休館日與重疊預約，單看預約筆數無法完整反映實際利用狀況。因此，本專案將教室使用統計、預約課表與講師班級管理整合至同一介面，協助管理人員查閱排課資訊，作為場地與教學資源安排的依據。</dd></div>
+        <div><dt>使用對象與目標</dt><dd>主要使用者為教育訓練單位的教務、行政及場地管理人員。系統提供日期區間查詢、各教室使用率圖表、預約課表，以及每日與連續六天的課程檢視，讓使用者快速掌握教室占用與空檔，並逐堂安排負責及備選講師。目標是減少跨資料來源查找與人工核對的負擔，提升排課資訊的可讀性與管理效率。</dd></div>
+        <div><dt>我的貢獻</dt><dd>我負責需求整理、操作流程規劃及前後端功能整合，並運用 Codex 協助開發與驗證。前端以 HTML、CSS 與原生 JavaScript 建立使用率儀表板、預約課表及講師指派介面，將既有圖片課表轉為結構化資料，支援日期切換與課程檢視；後端以 Python、FastAPI 串接 MySQL，實作使用率計算與重複預約展開，處理休館日、跨日及重疊預約等情境。此外，也加入查詢失敗時的歷史快照備援、載入與錯誤提示，並透過測試驗證統計邏輯、課表資料與前後端串接。</dd></div>
       </dl></div>
     </section>
     <section class="detail-section" id="features" aria-labelledby="features-title">
