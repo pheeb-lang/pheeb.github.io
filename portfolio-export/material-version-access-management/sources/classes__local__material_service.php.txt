@@ -1,0 +1,133 @@
+<?php
+namespace local_classgroup\local;
+
+defined('MOODLE_INTERNAL') || die();
+
+/** Projects class audiences into Moodle's server-enforced activity restrictions. */
+final class material_service {
+    public static function save(int $offeringid, int $cmid, array $data): void {
+        global $CFG, $DB, $USER;
+        require_once($CFG->dirroot . '/group/lib.php');
+        $offering = content_access::require_offering($offeringid);
+        $cm = $DB->get_record('course_modules', ['id' => $cmid, 'course' => $offering->courseid], '*', MUST_EXIST);
+        $mode = $data['audience'] ?? 'hidden';
+        $from = (int)($data['timefrom'] ?? 0);
+        $until = (int)($data['timeuntil'] ?? 0);
+        if (!in_array($mode, ['all', 'hidden', 'groups', 'students'], true)
+                || $from < 0 || $until < 0 || ($until && $from >= $until)) {
+            throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+        }
+        if (empty($CFG->enableavailability) && ($mode === 'groups' || $mode === 'students' || $from || $until)) {
+            throw new \moodle_exception('contentavailabilitydisabled', 'local_classgroup');
+        }
+        $groupids = array_values(array_unique(array_map('intval', $data['groups'] ?? [])));
+        $userids = array_values(array_unique(array_map('intval', $data['students'] ?? [])));
+        if ($mode === 'groups') {
+            if (!$groupids) {
+                throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+            }
+            foreach ($groupids as $groupid) {
+                if (!$DB->record_exists('groups', ['id' => $groupid, 'courseid' => $offering->courseid])) {
+                    throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+                }
+                if ($DB->record_exists('local_classgroup_content', ['managedgroupid' => $groupid])) {
+                    throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+                }
+            }
+        }
+        if ($mode === 'students') {
+            if (!$userids) {
+                throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+            }
+            foreach ($userids as $userid) {
+                if (!$DB->record_exists('local_classgroup_student', [
+                        'classid' => $offering->classid, 'userid' => $userid, 'active' => 1])) {
+                    throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+                }
+            }
+        }
+        $lock = \core\lock\lock_config::get_lock_factory('local_classgroup')->get_lock('material:' . $cmid, 10);
+        if (!$lock) {
+            throw new \moodle_exception('contentbusy', 'local_classgroup');
+        }
+        try {
+            $transaction = $DB->start_delegated_transaction();
+            $cm = $DB->get_record('course_modules', ['id' => $cmid, 'course' => $offering->courseid], '*', MUST_EXIST);
+            $rule = $DB->get_record('local_classgroup_content', ['cmid' => $cmid]);
+            if (!$rule) {
+                $rule = (object)['offeringid' => $offeringid, 'cmid' => $cmid, 'versionid' => 0,
+                    'sourcecmid' => 0, 'managedgroupid' => 0, 'baseavailability' => $cm->availability,
+                    'appliedavailability' => $cm->availability];
+            } else if ((string)$cm->availability !== (string)$rule->appliedavailability) {
+                // Do not silently erase restrictions changed in Moodle's activity editor.
+                throw new \moodle_exception('contentruleconflict', 'local_classgroup');
+            }
+            if ($mode === 'students') {
+                if (!$rule->managedgroupid || !$DB->record_exists('groups',
+                        ['id' => $rule->managedgroupid, 'courseid' => $offering->courseid])) {
+                    $rule->managedgroupid = groups_create_group((object)[
+                        'courseid' => $offering->courseid, 'name' => get_string('contentaudiencegroup',
+                        'local_classgroup', $cmid), 'visibility' => GROUPS_VISIBILITY_MEMBERS,
+                        'participation' => 1]);
+                }
+                $members = $DB->get_fieldset_select('groups_members', 'userid', 'groupid = ?', [$rule->managedgroupid]);
+                foreach (array_diff($members, $userids) as $userid) {
+                    groups_remove_member($rule->managedgroupid, $userid);
+                }
+                foreach (array_diff($userids, $members) as $userid) {
+                    groups_add_member($rule->managedgroupid, $userid);
+                }
+                $groupids = [(int)$rule->managedgroupid];
+            } else if ($rule->managedgroupid) {
+                foreach ($DB->get_fieldset_select('groups_members', 'userid', 'groupid = ?', [$rule->managedgroupid]) as $userid) {
+                    groups_remove_member($rule->managedgroupid, $userid);
+                }
+            }
+            $conditions = [];
+            if ($rule->baseavailability) {
+                $conditions[] = json_decode($rule->baseavailability, false, 512, JSON_THROW_ON_ERROR);
+            }
+            if (in_array($mode, ['groups', 'students'], true)) {
+                $conditions[] = (object)['op' => '|', 'c' => array_map(
+                    static fn(int $id): object => (object)['type' => 'group', 'id' => $id], $groupids)];
+            }
+            if ($from) {
+                $conditions[] = (object)['type' => 'date', 'd' => '>=', 't' => $from];
+            }
+            if ($until) {
+                $conditions[] = (object)['type' => 'date', 'd' => '<', 't' => $until];
+            }
+            $availability = $conditions ? json_encode((object)['op' => '&', 'c' => $conditions,
+                'showc' => array_fill(0, count($conditions), false)]) : null;
+            $rule->audience = $mode;
+            $rule->groupids = json_encode($mode === 'groups' ? $groupids : []);
+            $rule->timefrom = $from;
+            $rule->timeuntil = $until;
+            $rule->variant = trim((string)($data['variant'] ?? ''));
+            if (\core_text::strlen($rule->variant) > 255) {
+                throw new \moodle_exception('invalidcontentrule', 'local_classgroup');
+            }
+            $rule->modifiedby = $USER->id;
+            $rule->timemodified = time();
+            $rule->appliedavailability = $availability;
+            if (empty($rule->id)) {
+                $rule->id = $DB->insert_record('local_classgroup_content', $rule);
+            } else {
+                $DB->update_record('local_classgroup_content', $rule);
+            }
+            $DB->set_field('course_modules', 'availability', $availability, ['id' => $cmid]);
+            \core_courseformat\formatactions::cm($offering->courseid)->set_visibility($cmid, $mode !== 'hidden');
+            rebuild_course_cache($offering->courseid, true);
+            \local_classgroup\event\content_updated::create(['context' => \context_module::instance($cmid),
+                'objectid' => $rule->id, 'other' => ['offeringid' => $offeringid, 'audience' => $mode]])->trigger();
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            if (isset($transaction) && !$transaction->is_disposed()) {
+                $transaction->rollback($e);
+            }
+            throw $e;
+        } finally {
+            $lock->release();
+        }
+    }
+}

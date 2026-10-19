@@ -1,0 +1,301 @@
+<?php
+namespace local_classgroup\local;
+
+defined('MOODLE_INTERNAL') || die();
+
+/** Immutable, user-free template releases and their class-specific activity instances. */
+final class template_service {
+    public static function require_curriculum(int $id): \stdClass {
+        global $DB;
+        $curriculum = $DB->get_record('local_classgroup_course', ['id' => $id, 'active' => 1], '*', MUST_EXIST);
+        curriculum_service::require_edit_access((int)$curriculum->classgroupid);
+        return $curriculum;
+    }
+
+    /** Resolve the program template, creating an editable empty template if necessary. */
+    public static function edit_course(int $id): \stdClass {
+        global $CFG, $DB, $USER;
+        require_once($CFG->dirroot . '/course/lib.php');
+        $curriculum = self::require_curriculum($id);
+        $program = $DB->get_record('local_classgroup', ['id' => $curriculum->classgroupid], '*', MUST_EXIST);
+        $lock = self::lock('template:' . $id);
+        try {
+            $curriculum = $DB->get_record('local_classgroup_course', ['id' => $id], '*', MUST_EXIST);
+            $master = $DB->get_record('local_classgroup_coursemaster', ['id' => $curriculum->coursemasterid], '*', MUST_EXIST);
+            $courseid = $curriculum->courseid ?: ($curriculum->sourcecourseid ?: $master->templatecourseid);
+            if (!$courseid) {
+                $course = create_course((object)['category' => $program->categoryid, 'fullname' => $master->name,
+                    'shortname' => 'CG-TEMPLATE-' . $id . '-' . random_string(6), 'visible' => 0, 'format' => 'topics']);
+                $courseid = $course->id;
+            }
+            if ($DB->record_exists('local_classgroup_offering', ['courseid' => $courseid])) {
+                throw new \moodle_exception('contentsharedcourse', 'local_classgroup');
+            }
+            $DB->set_field('local_classgroup_course', 'sourcecourseid', $courseid, ['id' => $id]);
+            $course = get_course($courseid);
+            access_service::sync_templates((int)$program->id);
+            return $course;
+        } finally {
+            $lock->release();
+        }
+    }
+
+    /** Bind an existing editable course explicitly; arbitrary course IDs cannot be imported. */
+    public static function bind(int $id, int $courseid): void {
+        global $DB;
+        $curriculum = self::require_curriculum($id);
+        if ($courseid === SITEID || !$DB->record_exists('course', ['id' => $courseid])
+                || $DB->record_exists('local_classgroup_offering', ['courseid' => $courseid])) {
+            throw new \moodle_exception('invalidtemplatecourse', 'local_classgroup');
+        }
+        require_capability('moodle/course:update', \context_course::instance($courseid));
+        $DB->update_record('local_classgroup_course', (object)['id' => $id, 'sourcecourseid' => $courseid,
+            'courseid' => null, 'timemodified' => time()]);
+        access_service::sync_templates((int)$curriculum->classgroupid);
+    }
+
+    public static function queue_version(int $id, string $name): int {
+        global $DB, $USER;
+        $curriculum = self::require_curriculum($id);
+        $name = trim($name);
+        if ($name === '' || \core_text::strlen($name) > 255) {
+            throw new \moodle_exception('invalidversionname', 'local_classgroup');
+        }
+        $course = self::edit_course($id);
+        $transaction = $DB->start_delegated_transaction();
+        $versionid = $DB->insert_record('local_classgroup_version', (object)[
+            'curriculumid' => $curriculum->id, 'sourcecourseid' => $course->id, 'name' => $name,
+            'status' => 'queued', 'createdby' => $USER->id, 'timecreated' => time()]);
+        self::queue('version', $versionid);
+        $transaction->allow_commit();
+        return $versionid;
+    }
+
+    public static function versions_for_offering(\stdClass $offering): array {
+        global $DB;
+        return $DB->get_records_sql('SELECT v.* FROM {local_classgroup_version} v
+            JOIN {local_classgroup_course} c ON c.id = v.curriculumid
+            WHERE c.classgroupid = :program AND c.coursemasterid = :master AND c.active = 1
+                AND v.status = :status ORDER BY v.id DESC', ['program' => $offering->classgroupid,
+                'master' => $offering->coursemasterid, 'status' => 'ready']);
+    }
+
+    public static function queue_import(int $offeringid, int $versionid, array $selection): int {
+        global $DB, $USER;
+        $offering = content_access::require_offering($offeringid);
+        $versions = self::versions_for_offering($offering);
+        if (!isset($versions[$versionid])) {
+            throw new \moodle_exception('invalidtemplateversion', 'local_classgroup');
+        }
+        $catalog = json_decode($versions[$versionid]->catalog, true, 512, JSON_THROW_ON_ERROR);
+        $selection = array_values(array_unique(array_map('intval', $selection)));
+        sort($selection);
+        if (!$selection || array_diff($selection, array_column($catalog, 'id'))) {
+            throw new \moodle_exception('invalidcontentselection', 'local_classgroup');
+        }
+        $key = hash('sha256', $versionid . ':' . implode(',', $selection));
+        $lock = self::lock('offering:' . $offeringid);
+        try {
+            $existing = $DB->get_record('local_classgroup_contentjob', ['offeringid' => $offeringid, 'requestkey' => $key]);
+            if ($existing) {
+                if ($existing->status === 'error') {
+                    $DB->set_field('local_classgroup_contentjob', 'status', 'queued', ['id' => $existing->id]);
+                    self::queue('import', (int)$existing->id);
+                }
+                return (int)$existing->id;
+            }
+            $transaction = $DB->start_delegated_transaction();
+            $id = $DB->insert_record('local_classgroup_contentjob', (object)[
+                'offeringid' => $offeringid, 'versionid' => $versionid, 'requestkey' => $key,
+                'selection' => json_encode($selection), 'status' => 'queued',
+                'createdby' => $USER->id, 'timecreated' => time()]);
+            self::queue('import', $id);
+            $transaction->allow_commit();
+            return $id;
+        } finally {
+            $lock->release();
+        }
+    }
+
+    private static function queue(string $kind, int $id): void {
+        global $USER;
+        $task = new \local_classgroup\task\prepare_content();
+        $task->set_userid($USER->id);
+        $task->set_custom_data(['kind' => $kind, 'id' => $id]);
+        \core\task\manager::queue_adhoc_task($task, true);
+    }
+
+    public static function lock(string $key): \core\lock\lock {
+        $lock = \core\lock\lock_config::get_lock_factory('local_classgroup')->get_lock($key, 10);
+        if (!$lock) {
+            throw new \moodle_exception('contentbusy', 'local_classgroup');
+        }
+        return $lock;
+    }
+
+    private static function includes(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+        require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
+    }
+
+    /** Disable user records, roles, enrolments, logs and course-wide completion in every snapshot. */
+    private static function user_free(\base_plan $plan): void {
+        foreach (['users', 'role_assignments', 'user_files', 'comments', 'logs', 'grade_histories',
+                'badges', 'blocks', 'calendarevents', 'groups', 'competencies', 'course_completion', 'enrolments'] as $name) {
+            if ($plan->setting_exists($name)) {
+                $setting = $plan->get_setting($name);
+                if ($setting->get_value()) {
+                    $setting->set_value($name === 'enrolments' ? \backup::ENROL_NEVER : false);
+                }
+            }
+        }
+    }
+
+    public static function build_version(int $id): void {
+        global $DB, $USER;
+        self::includes();
+        $lock = self::lock('version:' . $id);
+        $bc = null;
+        try {
+            $version = $DB->get_record('local_classgroup_version', ['id' => $id], '*', MUST_EXIST);
+            if ($version->status === 'ready') {
+                return;
+            }
+            self::require_curriculum((int)$version->curriculumid);
+            $DB->set_field('local_classgroup_version', 'status', 'processing', ['id' => $id]);
+            $bc = new \backup_controller(\backup::TYPE_1COURSE, $version->sourcecourseid,
+                \backup::FORMAT_MOODLE, \backup::INTERACTIVE_NO, \backup::MODE_SAMESITE, $USER->id);
+            self::user_free($bc->get_plan());
+            $bc->execute_plan();
+            $file = $bc->get_results()['backup_destination'];
+            $fs = get_file_storage();
+            $fileinfo = ['contextid' => \context_system::instance()->id, 'component' => 'local_classgroup',
+                'filearea' => 'templateversion', 'itemid' => $id, 'filepath' => '/', 'filename' => 'template.mbz'];
+            $fs->delete_area_files($fileinfo['contextid'], 'local_classgroup', 'templateversion', $id);
+            $archive = $fs->create_file_from_storedfile($fileinfo, $file);
+            $path = make_request_directory();
+            if (!$archive->extract_to_pathname(get_file_packer('application/vnd.moodle.backup'), $path)) {
+                throw new \moodle_exception('contentarchiveerror', 'local_classgroup');
+            }
+            $xml = simplexml_load_file($path . '/moodle_backup.xml');
+            $catalog = [];
+            foreach ($xml->information->contents->activities->activity as $activity) {
+                $catalog[] = ['id' => (int)$activity->moduleid, 'name' => (string)$activity->title,
+                    'module' => (string)$activity->modulename, 'section' => (int)$activity->sectionid];
+            }
+            $DB->update_record('local_classgroup_version', (object)['id' => $id,
+                'status' => 'ready', 'catalog' => json_encode($catalog, JSON_UNESCAPED_UNICODE), 'error' => null]);
+            $file->delete();
+        } finally {
+            if ($bc) {
+                $bc->destroy();
+            }
+            $lock->release();
+        }
+    }
+
+    /** Restore only selected activities; file storage reuses the same content hashes across classes. */
+    public static function import_version(int $id): void {
+        global $CFG, $DB, $USER;
+        self::includes();
+        $job = $DB->get_record('local_classgroup_contentjob', ['id' => $id], '*', MUST_EXIST);
+        $lock = self::lock('offering:' . $job->offeringid);
+        $rc = null;
+        try {
+            $job = $DB->get_record('local_classgroup_contentjob', ['id' => $id], '*', MUST_EXIST);
+            if ($job->status === 'ready') {
+                return;
+            }
+            $offering = content_access::require_offering((int)$job->offeringid);
+            $versions = self::versions_for_offering($offering);
+            if (!isset($versions[$job->versionid])) {
+                throw new \moodle_exception('invalidtemplateversion', 'local_classgroup');
+            }
+            $version = $versions[$job->versionid];
+            $selection = json_decode($job->selection, true, 512, JSON_THROW_ON_ERROR);
+            $existing = $DB->get_fieldset_select('local_classgroup_content', 'sourcecmid',
+                'offeringid = ? AND versionid = ?', [$offering->id, $version->id]);
+            $selection = array_values(array_diff($selection, $existing));
+            if (!$selection) {
+                $DB->set_field('local_classgroup_contentjob', 'status', 'ready', ['id' => $id]);
+                return;
+            }
+            $DB->set_field('local_classgroup_contentjob', 'status', 'processing', ['id' => $id]);
+            $course = offering_service::ensure_course((int)$offering->id);
+            $archive = get_file_storage()->get_file(\context_system::instance()->id, 'local_classgroup',
+                'templateversion', $version->id, '/', 'template.mbz');
+            if (!$archive) {
+                throw new \moodle_exception('contentarchiveerror', 'local_classgroup');
+            }
+            $tempdir = 'classgroup_' . random_string(24);
+            $path = make_backup_temp_directory($tempdir);
+            if (!$archive->extract_to_pathname(get_file_packer('application/vnd.moodle.backup'), $path)) {
+                throw new \moodle_exception('contentarchiveerror', 'local_classgroup');
+            }
+            // Mark activities hidden in the private extraction before restore, avoiding an exposure window.
+            foreach (glob($path . '/activities/*/module.xml') as $modulefile) {
+                $xml = simplexml_load_file($modulefile);
+                $xml->visible = '0';
+                $xml->visibleold = '0';
+                $xml->asXML($modulefile);
+            }
+            // Section summaries may embed videos outside the selected activities.
+            foreach (glob($path . '/sections/*/section.xml') as $sectionfile) {
+                $xml = simplexml_load_file($sectionfile);
+                $xml->summary = '';
+                $xml->asXML($sectionfile);
+            }
+            $rc = new \restore_controller($tempdir, $course->id, \backup::INTERACTIVE_NO,
+                \backup::MODE_SAMESITE, $USER->id, \backup::TARGET_EXISTING_ADDING);
+            self::user_free($rc->get_plan());
+            foreach ($rc->get_plan()->get_settings() as $setting) {
+                if (preg_match('/^(.+)_([0-9]+)_included$/', $setting->get_name(), $matches)
+                        && $matches[1] !== 'section') {
+                    $setting->set_value(in_array((int)$matches[2], $selection, true));
+                }
+            }
+            if (!$rc->execute_precheck()) {
+                $results = $rc->get_precheck_results();
+                if (!empty($results['errors'])) {
+                    throw new \moodle_exception('contentrestoreerror', 'local_classgroup', '',
+                        implode('; ', $results['errors']));
+                }
+            }
+            // DB changes, activity mappings and job completion commit together for retry safety.
+            $transaction = $DB->start_delegated_transaction();
+            $rc->execute_plan();
+            $mappings = [];
+            foreach ($rc->get_plan()->get_tasks() as $task) {
+                if ($task instanceof \restore_activity_task && $task->get_moduleid()) {
+                    $mappings[$task->get_old_moduleid()] = (int)$task->get_moduleid();
+                }
+            }
+            foreach ($selection as $sourcecmid) {
+                if (empty($mappings[$sourcecmid])) {
+                    throw new \moodle_exception('contentrestoreerror', 'local_classgroup', '', $sourcecmid);
+                }
+                $cmid = $mappings[$sourcecmid];
+                $cm = $DB->get_record('course_modules', ['id' => $cmid, 'course' => $course->id], '*', MUST_EXIST);
+                $DB->insert_record('local_classgroup_content', (object)[
+                    'offeringid' => $offering->id, 'cmid' => $cmid, 'versionid' => $version->id,
+                    'sourcecmid' => $sourcecmid, 'audience' => 'hidden', 'variant' => '',
+                    'baseavailability' => $cm->availability, 'appliedavailability' => $cm->availability,
+                    'modifiedby' => $USER->id, 'timemodified' => time()]);
+            }
+            $DB->update_record('local_classgroup_contentjob', (object)['id' => $id, 'status' => 'ready', 'error' => null]);
+            rebuild_course_cache($course->id, true);
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            if (isset($transaction) && !$transaction->is_disposed()) {
+                $transaction->rollback($e);
+            }
+            throw $e;
+        } finally {
+            if ($rc) {
+                $rc->destroy();
+            }
+            $lock->release();
+        }
+    }
+}

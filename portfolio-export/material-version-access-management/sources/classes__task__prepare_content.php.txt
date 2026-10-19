@@ -1,0 +1,24 @@
+<?php
+namespace local_classgroup\task;
+
+defined('MOODLE_INTERNAL') || die();
+
+final class prepare_content extends \core\task\adhoc_task {
+    public function execute() {
+        global $DB;
+        $data = $this->get_custom_data();
+        $table = $data->kind === 'version' ? 'local_classgroup_version' : 'local_classgroup_contentjob';
+        try {
+            if ($data->kind === 'version') {
+                \local_classgroup\local\template_service::build_version((int)$data->id);
+            } else {
+                \local_classgroup\local\template_service::import_version((int)$data->id);
+            }
+        } catch (\Throwable $e) {
+            if ($DB->get_field($table, 'status', ['id' => $data->id]) !== 'ready') {
+                $DB->update_record($table, (object)['id' => $data->id, 'status' => 'error', 'error' => $e->getMessage()]);
+            }
+            throw $e;
+        }
+    }
+}

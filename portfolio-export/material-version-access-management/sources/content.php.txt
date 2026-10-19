@@ -1,0 +1,152 @@
+<?php
+require_once(__DIR__ . '/../../config.php');
+
+require_login();
+$id = required_param('id', PARAM_INT);
+$offering = \local_classgroup\local\content_access::require_offering($id);
+$class = $DB->get_record('local_classgroup_class', ['id' => $offering->classid], '*', MUST_EXIST);
+$master = $DB->get_record('local_classgroup_coursemaster', ['id' => $offering->coursemasterid], '*', MUST_EXIST);
+$url = new moodle_url('/local/classgroup/content.php', ['id' => $id]);
+\local_classgroup\local\ui::setup_page('content.php', $class->name . ' — ' . $master->name, ['id' => $id]);
+$versions = \local_classgroup\local\template_service::versions_for_offering($offering);
+$versionid = optional_param('versionid', $versions ? (int)array_key_first($versions) : 0, PARAM_INT);
+$version = $versions[$versionid] ?? null;
+$error = '';
+if (data_submitted()) {
+    require_sesskey();
+    try {
+        $action = required_param('action', PARAM_ALPHA);
+        if ($action === 'import') {
+            \local_classgroup\local\template_service::queue_import($id, $versionid,
+                optional_param_array('selection', [], PARAM_INT));
+        } else if ($action === 'bulk') {
+            $mode = required_param('audience', PARAM_ALPHA);
+            if (!in_array($mode, ['hidden', 'all'], true)) {
+                throw new moodle_exception('invalidcontentrule', 'local_classgroup');
+            }
+            $selection = optional_param_array('materials', [], PARAM_INT);
+            if (!$selection) {
+                throw new moodle_exception('invalidcontentselection', 'local_classgroup');
+            }
+            $transaction = $DB->start_delegated_transaction();
+            foreach ($selection as $cmid) {
+                $rule = $DB->get_record('local_classgroup_content', ['cmid' => $cmid]);
+                $data = $rule ? (array)$rule : [];
+                $data['audience'] = $mode;
+                \local_classgroup\local\material_service::save($id, $cmid, $data);
+            }
+            $transaction->allow_commit();
+        } else if ($action === 'empty') {
+            \local_classgroup\local\offering_service::ensure_course($id);
+        } else if ($action === 'process') {
+            $job = $DB->get_record('local_classgroup_contentjob',
+                ['id' => required_param('jobid', PARAM_INT), 'offeringid' => $id], '*', MUST_EXIST);
+            \core_php_time_limit::raise(600);
+            \local_classgroup\local\template_service::import_version((int)$job->id);
+        }
+        redirect($url, get_string('contentrequestsaved', 'local_classgroup'));
+    } catch (Throwable $e) {
+        if (isset($transaction) && !$transaction->is_disposed()) {
+            try {
+                $transaction->rollback($e);
+            } catch (Throwable $rollbackerror) {
+                // The original validation error is shown below.
+            }
+        }
+        $error = $e->getMessage();
+    }
+}
+echo $OUTPUT->header();
+echo html_writer::link(new moodle_url('/local/classgroup/offerings.php', ['classid' => $class->id]),
+    get_string('back'), ['class' => 'btn btn-secondary mb-3']);
+if ($error) {
+    echo $OUTPUT->notification($error, 'error');
+}
+echo $OUTPUT->notification(get_string('contentimporthelp', 'local_classgroup'), 'info');
+$formstart = static function(string $action) use ($url, $id): void {
+    echo html_writer::start_tag('form', ['method' => 'post', 'action' => $url, 'class' => 'mb-4']);
+    foreach (['id' => $id, 'sesskey' => sesskey(), 'action' => $action] as $key => $value) {
+        echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $key, 'value' => $value]);
+    }
+};
+echo $OUTPUT->heading(get_string('contentimportversion', 'local_classgroup'), 3);
+if ($versions) {
+    $options = array_map(static fn($v) => $v->name . ' — ' . userdate($v->timecreated), $versions);
+    echo $OUTPUT->single_select($url, 'versionid', $options, $versionid, null);
+    if ($version) {
+        $formstart('import');
+        echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'versionid', 'value' => $versionid]);
+        $imported = $DB->get_fieldset_select('local_classgroup_content', 'sourcecmid',
+            'offeringid = ? AND versionid = ?', [$id, $versionid]);
+        foreach (json_decode($version->catalog, true) as $item) {
+            $done = in_array($item['id'], $imported);
+            $attrs = ['type' => 'checkbox', 'name' => 'selection[]', 'value' => $item['id']];
+            if ($done) {
+                $attrs['disabled'] = true;
+            } else {
+                $attrs['checked'] = true;
+            }
+            echo html_writer::tag('label', html_writer::empty_tag('input', $attrs) . ' ' . s($item['name']) .
+                ' (' . s($item['module']) . ')' . ($done ? ' — ' . get_string('contentimported', 'local_classgroup') : ''),
+                ['class' => 'd-block']);
+        }
+        echo html_writer::tag('button', get_string('contentimportselected', 'local_classgroup'),
+            ['type' => 'submit', 'class' => 'btn btn-primary mt-2']);
+        echo html_writer::end_tag('form');
+    }
+} else {
+    echo $OUTPUT->notification(get_string('contentnoversions', 'local_classgroup'), 'info');
+}
+foreach ($DB->get_records('local_classgroup_contentjob', ['offeringid' => $id], 'id DESC', '*', 0, 10) as $job) {
+    $message = get_string('contentstatus' . $job->status, 'local_classgroup') . ': ' .
+        ($versions[$job->versionid]->name ?? '#' . $job->versionid);
+    if ($job->error) {
+        $message .= ' — ' . $job->error;
+    }
+    echo $OUTPUT->notification(s($message), $job->status === 'error' ? 'error' : 'info');
+    if ($job->status !== 'ready') {
+        echo $OUTPUT->single_button(new moodle_url($url, ['action' => 'process', 'jobid' => $job->id]),
+            get_string('contentprocessnow', 'local_classgroup'), 'post');
+    }
+}
+if (!$offering->courseid) {
+    // Also supports supplemental classes that have not yet been given a template.
+    $formstart('empty');
+    echo html_writer::tag('button', get_string('contentemptycourse', 'local_classgroup'),
+        ['type' => 'submit', 'class' => 'btn btn-secondary']);
+    echo html_writer::end_tag('form');
+} else {
+    echo $OUTPUT->heading(get_string('contentmaterials', 'local_classgroup'), 3);
+    echo html_writer::link(new moodle_url('/course/view.php', ['id' => $offering->courseid, 'edit' => 'on', 'sesskey' => sesskey()]),
+        get_string('contenteditclass', 'local_classgroup'), ['class' => 'btn btn-secondary mb-3']);
+    $formstart('bulk');
+    $table = new html_table();
+    $table->head = [get_string('select'), get_string('name'), get_string('contentversionname', 'local_classgroup'),
+        get_string('contentvariant', 'local_classgroup'), get_string('contentaudience', 'local_classgroup'), get_string('actions')];
+    $rules = $DB->get_records('local_classgroup_content', ['offeringid' => $id]);
+    $bycm = [];
+    foreach ($rules as $rule) {
+        $bycm[$rule->cmid] = $rule;
+    }
+    foreach (get_fast_modinfo($offering->courseid)->get_cms() as $cm) {
+        if ($cm->deletioninprogress) {
+            continue;
+        }
+        $rule = $bycm[$cm->id] ?? null;
+        $mode = $cm->visible ? ($rule->audience ?? 'all') : 'hidden';
+        $table->data[] = [html_writer::empty_tag('input', ['type' => 'checkbox', 'name' => 'materials[]',
+            'value' => $cm->id, 'aria-label' => $cm->name]), s($cm->name),
+            s($versions[$rule->versionid ?? 0]->name ?? get_string('contentlocalmaterial', 'local_classgroup')),
+            s($rule->variant ?? ''), get_string('content' . $mode, 'local_classgroup'),
+            html_writer::link(new moodle_url('/local/classgroup/material.php', ['id' => $id, 'cmid' => $cm->id]),
+                get_string('settings'))];
+    }
+    echo html_writer::table($table);
+    echo html_writer::select(['hidden' => get_string('contenthidden', 'local_classgroup'),
+        'all' => get_string('contentall', 'local_classgroup')], 'audience', 'hidden', false,
+        ['aria-label' => get_string('contentaudience', 'local_classgroup')]);
+    echo html_writer::tag('button', get_string('contentapplyselected', 'local_classgroup'),
+        ['type' => 'submit', 'class' => 'btn btn-primary ms-2']);
+    echo html_writer::end_tag('form');
+}
+echo $OUTPUT->footer();

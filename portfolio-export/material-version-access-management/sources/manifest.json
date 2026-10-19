@@ -1,0 +1,42 @@
+[
+  {
+    "original": "moodle/public/local/classgroup/classes/form/material_form.php",
+    "copy": "classes__form__material_form.php.txt",
+    "sha256": "95a2a893c5ad1e34b83753441cfe233a38e1065d8f736df51a9faf8507a16b46"
+  },
+  {
+    "original": "moodle/public/local/classgroup/classes/local/content_access.php",
+    "copy": "classes__local__content_access.php.txt",
+    "sha256": "b7bbb408d99d20b77c75da13b65b96c07225b7c67e6ee9d3f53581f6fa61faf8"
+  },
+  {
+    "original": "moodle/public/local/classgroup/classes/local/material_service.php",
+    "copy": "classes__local__material_service.php.txt",
+    "sha256": "d1ae93ce1fec2d306e00d938e4509c9b81467b2d43f8c80b8b148b9bba7f40aa"
+  },
+  {
+    "original": "moodle/public/local/classgroup/classes/local/template_service.php",
+    "copy": "classes__local__template_service.php.txt",
+    "sha256": "b4df199f787af88933320dd852c0fdcf3678bc971a1b35be7293040bd3f66cba"
+  },
+  {
+    "original": "moodle/public/local/classgroup/classes/task/prepare_content.php",
+    "copy": "classes__task__prepare_content.php.txt",
+    "sha256": "2ad2c8d4f79c451bfb368eaab1857ac1f82f95f0885bfc05ad9ff0b02d0ebc25"
+  },
+  {
+    "original": "moodle/public/local/classgroup/content.php",
+    "copy": "content.php.txt",
+    "sha256": "57ffab21c89324c7d8cd277ac263742158fed2be36ef2508729df8faf933a6db"
+  },
+  {
+    "original": "moodle/public/local/classgroup/material.php",
+    "copy": "material.php.txt",
+    "sha256": "0a39ed1484e1ccc37911778fcc3f3e48e133598a837ddeb82f167e0e4e2dbe0c"
+  },
+  {
+    "original": "moodle/public/local/classgroup/templates.php",
+    "copy": "templates.php.txt",
+    "sha256": "8651bc42777176d721de93db11185eb091820d4e457233fb76715e34f1cddb7c"
+  }
+]

@@ -1,0 +1,52 @@
+<?php
+require_once(__DIR__ . '/../../config.php');
+
+require_login();
+$id = required_param('id', PARAM_INT);
+$cmid = required_param('cmid', PARAM_INT);
+$offering = \local_classgroup\local\content_access::require_offering($id);
+$cm = get_coursemodule_from_id('', $cmid, $offering->courseid, false, MUST_EXIST);
+if (!$offering->courseid || (int)$cm->course !== (int)$offering->courseid) {
+    throw new moodle_exception('invalidcontentrule', 'local_classgroup');
+}
+$url = new moodle_url('/local/classgroup/content.php', ['id' => $id]);
+\local_classgroup\local\ui::setup_page('material.php', get_string('contentaudience', 'local_classgroup') . ': ' . $cm->name,
+    ['id' => $id, 'cmid' => $cmid]);
+$groups = $DB->get_records_menu('groups', ['courseid' => $offering->courseid], 'name', 'id,name');
+$managedgroups = $DB->get_fieldset_select('local_classgroup_content', 'managedgroupid',
+    'offeringid = ? AND managedgroupid <> 0', [$id]);
+$groups = array_diff_key($groups, array_flip($managedgroups));
+$students = [];
+foreach ($DB->get_records_sql('SELECT u.id, u.firstname, u.lastname FROM {user} u
+    JOIN {local_classgroup_student} s ON s.userid = u.id
+    WHERE s.classid = ? AND s.active = 1 AND u.deleted = 0 AND u.suspended = 0 ORDER BY u.lastname, u.firstname',
+    [$offering->classid]) as $student) {
+    $students[$student->id] = fullname($student);
+}
+$form = new \local_classgroup\form\material_form(null, ['groups' => $groups, 'students' => $students]);
+$rule = $DB->get_record('local_classgroup_content', ['cmid' => $cmid]);
+$defaults = $rule ? (array)$rule : ['audience' => $cm->visible ? 'all' : 'hidden'];
+$defaults['id'] = $id;
+$defaults['cmid'] = $cmid;
+$defaults['groups'] = $rule ? json_decode($rule->groupids ?? '[]', true) : [];
+$defaults['students'] = $rule && $rule->managedgroupid ? $DB->get_fieldset_select('groups_members', 'userid',
+    'groupid = ?', [$rule->managedgroupid]) : [];
+$form->set_data($defaults);
+if ($form->is_cancelled()) {
+    redirect($url);
+}
+$error = '';
+if ($data = $form->get_data()) {
+    try {
+        \local_classgroup\local\material_service::save($id, $cmid, (array)$data);
+        redirect($url, get_string('changessaved'));
+    } catch (Throwable $e) {
+        $error = $e->getMessage();
+    }
+}
+echo $OUTPUT->header();
+if ($error) {
+    echo $OUTPUT->notification($error, 'error');
+}
+$form->display();
+echo $OUTPUT->footer();

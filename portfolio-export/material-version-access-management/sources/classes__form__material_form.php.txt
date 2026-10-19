@@ -1,0 +1,45 @@
+<?php
+namespace local_classgroup\form;
+
+defined('MOODLE_INTERNAL') || die();
+require_once($CFG->libdir . '/formslib.php');
+
+final class material_form extends \moodleform {
+    public function definition() {
+        $mform = $this->_form;
+        foreach (['id', 'cmid'] as $field) {
+            $mform->addElement('hidden', $field);
+            $mform->setType($field, PARAM_INT);
+        }
+        $mform->addElement('text', 'variant', get_string('contentvariant', 'local_classgroup'), ['maxlength' => 255]);
+        $mform->setType('variant', PARAM_TEXT);
+        $mform->addElement('select', 'audience', get_string('contentaudience', 'local_classgroup'), [
+            'hidden' => get_string('contenthidden', 'local_classgroup'),
+            'all' => get_string('contentall', 'local_classgroup'),
+            'groups' => get_string('contentgroups', 'local_classgroup'),
+            'students' => get_string('contentstudents', 'local_classgroup'),
+        ]);
+        $mform->addElement('autocomplete', 'groups', get_string('contentgroups', 'local_classgroup'),
+            $this->_customdata['groups'], ['multiple' => true]);
+        $mform->hideIf('groups', 'audience', 'neq', 'groups');
+        $mform->addElement('autocomplete', 'students', get_string('contentstudents', 'local_classgroup'),
+            $this->_customdata['students'], ['multiple' => true]);
+        $mform->hideIf('students', 'audience', 'neq', 'students');
+        $mform->addElement('date_time_selector', 'timefrom', get_string('contenttimefrom', 'local_classgroup'), ['optional' => true]);
+        $mform->addElement('date_time_selector', 'timeuntil', get_string('contenttimeuntil', 'local_classgroup'), ['optional' => true]);
+        $this->add_action_buttons();
+    }
+
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        if (!empty($data['timeuntil']) && $data['timeuntil'] <= $data['timefrom']) {
+            $errors['timeuntil'] = get_string('invalidcontentrule', 'local_classgroup');
+        }
+        foreach (['groups', 'students'] as $mode) {
+            if ($data['audience'] === $mode && empty($data[$mode])) {
+                $errors[$mode] = get_string('required');
+            }
+        }
+        return $errors;
+    }
+}

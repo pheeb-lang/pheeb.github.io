@@ -1,0 +1,47 @@
+<?php
+namespace local_classgroup\local;
+
+defined('MOODLE_INTERNAL') || die();
+
+/** Access to class content is scoped to the assigned tutor or category managers. */
+final class content_access {
+    public static function can_manage(int $classid, ?int $userid = null): bool {
+        global $DB, $USER;
+        $userid = $userid ?? (int)$USER->id;
+        $class = $DB->get_record('local_classgroup_class', ['id' => $classid]);
+        if (!$class || !$DB->record_exists('user', ['id' => $userid, 'deleted' => 0, 'suspended' => 0])) {
+            return false;
+        }
+        if ((int)$class->tutorid === $userid || (!empty($class->tutorpersonid) && $DB->record_exists(
+                'local_classgroup_person', ['id' => $class->tutorpersonid, 'userid' => $userid, 'active' => 1]))) {
+            return true;
+        }
+        $program = $DB->get_record('local_classgroup', ['id' => $class->classgroupid], '*', MUST_EXIST);
+        return has_capability('local/classgroup:manage', \context_coursecat::instance($program->categoryid), $userid);
+    }
+
+    public static function require_class(int $classid): \stdClass {
+        global $DB;
+        $class = $DB->get_record('local_classgroup_class', ['id' => $classid], '*', MUST_EXIST);
+        if (!self::can_manage($classid)) {
+            throw new \required_capability_exception(\context_system::instance(),
+                'local/classgroup:manage', 'nopermissions', '');
+        }
+        return $class;
+    }
+
+    public static function require_offering(int $id): \stdClass {
+        global $DB;
+        $offering = $DB->get_record('local_classgroup_offering', ['id' => $id], '*', MUST_EXIST);
+        self::require_class((int)$offering->classid);
+        // Never project class-specific access onto a course shared by another offering or a template.
+        if ($offering->courseid && ($DB->record_exists_select('local_classgroup_offering',
+                'courseid = :courseid AND id <> :id', ['courseid' => $offering->courseid, 'id' => $id])
+                || $DB->record_exists('local_classgroup_course', ['sourcecourseid' => $offering->courseid])
+                || $DB->record_exists('local_classgroup_course', ['courseid' => $offering->courseid])
+                || $DB->record_exists('local_classgroup_coursemaster', ['templatecourseid' => $offering->courseid]))) {
+            throw new \moodle_exception('contentsharedcourse', 'local_classgroup');
+        }
+        return $offering;
+    }
+}

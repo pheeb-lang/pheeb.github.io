@@ -1,0 +1,47 @@
+/* Minimal Boost/Bootstrap compatibility for the original PHP-generated DOM.
+ * Sources: theme/boost/scss/preset/default.scss; bootstrap/forms, tables, buttons;
+ * local/classgroup/styles.css. GPL-3.0-or-later. All selectors scoped. */
+#material-demo{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:16px;line-height:1.5;color:#1d2125;background:#fff;padding:0 1rem 2rem;max-width:1440px;margin:auto;--bs-primary:#0f6cbf;--bs-border-color:#dee2e6}
+#material-demo *,#material-demo *::before,#material-demo *::after{box-sizing:border-box}
+#material-demo [hidden]{display:none!important}
+#material-demo :where(h1,h2,h3,p){margin:0 0 1rem}
+#material-demo h1{font-size:2.2rem;font-weight:600;margin-top:1.5rem}
+#material-demo h2{font-size:1.75rem}#material-demo h3{font-size:1.4rem}
+#material-demo a{color:#0f6cbf;text-decoration:none}#material-demo a:hover{text-decoration:underline}
+#material-demo :where(button,input,select){font:inherit}
+#material-demo :where(input,select,a,button,summary):focus-visible{outline:3px solid #80bdff;outline-offset:2px}
+#material-demo .btn{display:inline-block;padding:.5rem 1rem;border:1px solid transparent;border-radius:.5rem;font-size:.95rem;line-height:1.5;cursor:pointer;text-decoration:none;text-align:center;vertical-align:middle}
+#material-demo .btn-primary{background:#0f6cbf;color:white;border-color:#0f6cbf}
+#material-demo .btn-secondary{background:#e9ecef;color:#1d2125;border-color:#ced4da}
+#material-demo .btn:hover{filter:brightness(.95)}#material-demo .btn:disabled{opacity:.6;cursor:default}
+#material-demo .form-control,#material-demo .form-select{display:block;width:100%;padding:.5rem .75rem;border:1px solid #8f959e;border-radius:.5rem;background:white;color:#1d2125;min-height:2.5rem}
+#material-demo .inline-select{display:inline-block;width:auto}
+#material-demo input[type=checkbox]{width:1rem;height:1rem;vertical-align:middle;accent-color:#0f6cbf}
+#material-demo label{display:block}#material-demo .d-block{display:block;margin:.4rem 0}
+#material-demo .mform{margin:1rem 0 2rem;max-width:70rem}
+#material-demo .fitem.row{display:flex;gap:1rem;margin:0 0 1.5rem;align-items:flex-start}
+#material-demo .col-form-label{flex:0 0 24%;padding-top:.5rem}
+#material-demo .felement{flex:1;min-width:0}
+#material-demo .small{font-size:.85rem}#material-demo .text-muted{color:#626b76}
+#material-demo .mb-2{margin-bottom:.5rem}#material-demo .mb-3{margin-bottom:1rem}#material-demo .mb-4{margin-bottom:1.5rem}#material-demo .mt-2{margin-top:.5rem}#material-demo .ms-2{margin-left:.5rem}
+#material-demo .alert{border:1px solid transparent;border-radius:.5rem;padding:.8rem 1rem;margin:1rem 0}
+#material-demo .alert-info{background:#d9edf7;color:#164b66;border-color:#bce8f1}
+#material-demo .alert-success{background:#e0f0da;color:#27542b;border-color:#bad6b3}
+#material-demo .alert-error{background:#f8d7da;color:#842029;border-color:#f5c2c7}
+#material-demo .table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1rem 0}
+#material-demo .generaltable{border-collapse:collapse;width:100%;background:white}
+#material-demo .generaltable :where(th,td){padding:.75rem;border-bottom:1px solid #dee2e6;text-align:left;vertical-align:middle;min-width:5rem;overflow-wrap:anywhere}
+#material-demo .generaltable th{font-weight:600}#material-demo .generaltable tbody tr:hover{background:#f8f9fa}
+#material-demo .status{display:inline-block;border-radius:.375rem;padding:.2rem .5rem;white-space:nowrap;font-size:.85rem;background:#e9ecef;color:#343a40}
+#material-demo .status-ready{background:#eaf8f0;color:#207348}#material-demo .status-error{background:#f8d7da;color:#842029}#material-demo .status-processing{background:#d9edf7;color:#164b66}
+#material-demo .demo-tools{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.75rem;background:#fff4ce;border-bottom:1px solid #d5bc69}
+#material-demo .demo-tools strong{flex:1;min-width:14rem}#material-demo .demo-tools span{font-size:.85rem}
+#material-demo .demo-nav{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;padding:1rem 0;border-bottom:1px solid #ddd;margin-bottom:1rem}
+#material-demo .demo-nav .btn{margin-left:auto}
+#material-demo .demo-footer{padding:2rem 0;margin-top:2rem;border-top:1px solid #ddd;color:#626b76;font-size:.85rem}
+#material-demo dialog{border:1px solid #dee2e6;border-radius:.6rem;padding:1.5rem;max-width:min(90vw,36rem);color:#1d2125;background:#fff;box-shadow:0 .5rem 1rem #0003}
+#material-demo dialog::backdrop{background:#0008}
+#material-demo details{margin-top:2rem;border-top:1px solid #ddd;padding-top:1rem}#material-demo summary{cursor:pointer}#material-demo article{padding:1rem;background:#f8f9fa}
+#material-demo #dev{margin-top:2rem;border:1px dashed #8f959e;padding:1rem}
+#material-demo .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:767.98px){#material-demo h1{font-size:1.65rem}#material-demo .fitem.row{flex-direction:column;gap:.4rem}#material-demo .felement{width:100%}#material-demo .demo-nav{gap:.75rem}#material-demo .demo-nav .btn{margin-left:0}#material-demo .generaltable{min-width:42rem}#material-demo .demo-tools{align-items:stretch}#material-demo .col-form-label{padding:0}}

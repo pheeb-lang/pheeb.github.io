@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>教材共用、版本發布與觀看權限管理｜互動展示</title>
+<link rel="stylesheet" href="assets/compat.css"><script defer src="assets/data.js"></script><script defer src="assets/domain.js"></script><script defer src="assets/app.js"></script></head>
+<body><div id="material-demo">
+<header class="demo-tools"><strong>展示資料：發布、匯入與權限設定僅作用於本機模擬資料</strong><span>管理端展示 · 虛構資料</span><button type="button" id="reset" class="btn btn-secondary">重設展示資料（展示工具）</button></header>
+<nav class="demo-nav" aria-label="教材管理"><a href="#templates">共用範本課程（展示流程入口）</a><a href="#offerings">班級課程教材</a><button type="button" id="refresh" class="btn btn-secondary">重新整理進度</button></nav>
+<div id="notice" role="status" aria-live="polite"></div><main id="app"></main>
+<section id="dev" hidden></section>
+<footer class="demo-footer">班級與人員完整管理、AI 小幫手及學習統計報表未納入展示。Moodle 課程編輯器入口僅說明限制。<br>純前端設定無法保護公開靜態檔案，也不會變更外部影音權限。<a href="README.md">使用與來源說明</a> · GPL-3.0-or-later</footer>
+<dialog id="limitation" aria-labelledby="dialog-title"><h2 id="dialog-title">Moodle 課程編輯器（展示限制）</h2><p>原入口會進入 Moodle 完整課程編輯器。靜態展示保留入口外觀，未複製該編輯器、檔案上傳或課程新增功能。您可以指定另一份虛構範本課程後發布版本。</p><button type="button" id="close-dialog" class="btn btn-primary">關閉</button></dialog>
+<dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">重設展示資料</h2><p>清除本展示的本機變更並還原虛構範例資料？</p><button id="reset-yes" class="btn btn-primary">重設</button> <button id="reset-no" class="btn btn-secondary">取消</button></dialog>
+</div></body></html>

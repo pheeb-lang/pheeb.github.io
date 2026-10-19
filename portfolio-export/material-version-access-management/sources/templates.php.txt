@@ -1,0 +1,79 @@
+<?php
+require_once(__DIR__ . '/../../config.php');
+
+require_login();
+$id = required_param('id', PARAM_INT);
+$curriculum = \local_classgroup\local\template_service::require_curriculum($id);
+$master = $DB->get_record('local_classgroup_coursemaster', ['id' => $curriculum->coursemasterid], '*', MUST_EXIST);
+$url = new moodle_url('/local/classgroup/templates.php', ['id' => $id]);
+\local_classgroup\local\ui::setup_page('templates.php', get_string('contenttemplates', 'local_classgroup') . ': ' .
+    $master->name, ['id' => $id]);
+$error = '';
+if (data_submitted()) {
+    require_sesskey();
+    try {
+        $action = required_param('action', PARAM_ALPHA);
+        if ($action === 'edit') {
+            $course = \local_classgroup\local\template_service::edit_course($id);
+            redirect(new moodle_url('/course/view.php', ['id' => $course->id, 'edit' => 'on', 'sesskey' => sesskey()]));
+        } else if ($action === 'bind') {
+            \local_classgroup\local\template_service::bind($id, required_param('courseid', PARAM_INT));
+        } else if ($action === 'release') {
+            \local_classgroup\local\template_service::queue_version($id, required_param('name', PARAM_TEXT));
+        } else if ($action === 'process') {
+            $version = $DB->get_record('local_classgroup_version',
+                ['id' => required_param('versionid', PARAM_INT), 'curriculumid' => $id], '*', MUST_EXIST);
+            \core_php_time_limit::raise(600);
+            \local_classgroup\local\template_service::build_version((int)$version->id);
+        }
+        redirect($url, get_string('contentrequestsaved', 'local_classgroup'));
+    } catch (Throwable $e) {
+        $error = $e->getMessage();
+    }
+}
+echo $OUTPUT->header();
+echo html_writer::link(new moodle_url('/local/classgroup/curriculum.php', ['classgroupid' => $curriculum->classgroupid]),
+    get_string('back'), ['class' => 'btn btn-secondary mb-3']);
+echo $OUTPUT->notification(get_string('contenttemplatehelp', 'local_classgroup'), 'info');
+if ($error) {
+    echo $OUTPUT->notification($error, 'error');
+}
+$startform = static function(string $action) use ($url, $id): void {
+    echo html_writer::start_tag('form', ['method' => 'post', 'action' => $url, 'class' => 'mb-4']);
+    foreach (['id' => $id, 'sesskey' => sesskey(), 'action' => $action] as $name => $value) {
+        echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $name, 'value' => $value]);
+    }
+};
+$startform('edit');
+echo html_writer::tag('button', get_string('contentedittemplate', 'local_classgroup'),
+    ['type' => 'submit', 'class' => 'btn btn-primary']);
+echo html_writer::end_tag('form');
+$startform('bind');
+echo html_writer::tag('label', get_string('contentbindcourse', 'local_classgroup'), ['for' => 'template-course']);
+$options = [];
+foreach ($DB->get_records('course', null, 'fullname', 'id,fullname,shortname') as $course) {
+    if ($course->id !== SITEID && has_capability('moodle/course:update', context_course::instance($course->id))
+            && !$DB->record_exists('local_classgroup_offering', ['courseid' => $course->id])) {
+        $options[$course->id] = $course->fullname . ' (' . $course->shortname . ')';
+    }
+}
+echo html_writer::select($options, 'courseid', $curriculum->courseid ?: $curriculum->sourcecourseid,
+    ['' => get_string('choosedots')], ['id' => 'template-course', 'class' => 'form-select mb-2', 'required' => true]);
+echo html_writer::tag('button', get_string('savechanges'), ['type' => 'submit', 'class' => 'btn btn-secondary']);
+echo html_writer::end_tag('form');
+$startform('release');
+echo html_writer::tag('label', get_string('contentversionname', 'local_classgroup'), ['for' => 'version-name']);
+echo html_writer::empty_tag('input', ['type' => 'text', 'name' => 'name', 'id' => 'version-name',
+    'required' => true, 'maxlength' => 255, 'class' => 'form-control mb-2']);
+echo html_writer::tag('button', get_string('contentrelease', 'local_classgroup'), ['type' => 'submit', 'class' => 'btn btn-primary']);
+echo html_writer::end_tag('form');
+$table = new html_table();
+$table->head = [get_string('contentversionname', 'local_classgroup'), get_string('status'), get_string('time'), get_string('description')];
+foreach ($DB->get_records('local_classgroup_version', ['curriculumid' => $id], 'id DESC') as $version) {
+    $process = $version->status !== 'ready' ? $OUTPUT->single_button(new moodle_url($url, [
+        'action' => 'process', 'versionid' => $version->id]), get_string('contentprocessnow', 'local_classgroup'), 'post') : '';
+    $table->data[] = [s($version->name), get_string('contentstatus' . $version->status, 'local_classgroup'),
+        userdate($version->timecreated), s($version->error ?? '') . $process];
+}
+echo html_writer::table($table);
+echo $OUTPUT->footer();
