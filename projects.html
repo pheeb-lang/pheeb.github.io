@@ -36,6 +36,10 @@
     .project-number { color: var(--accent); font-family: Georgia, serif; font-size: 18px; letter-spacing: .05em; }
     h2 { margin: 32px 0 18px; font-family: var(--serif); font-size: clamp(26px, 2.6vw, 38px); font-weight: 500; line-height: 1.5; }
     article p { margin: 0; color: var(--muted); font-size: 17px; }
+    .project-link { display: block; text-decoration: none; }
+    .project-link h2 { transition: color .2s; }
+    .project-link:hover h2 { color: var(--accent); }
+    .project-cta { display: inline-block; margin-top: 26px; padding-bottom: 4px; border-bottom: 1px solid var(--accent); color: var(--accent); font-size: 15px; }
     footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; letter-spacing: .08em; }
     footer a { text-decoration: none; }
     footer a:hover { color: var(--accent); }
@@ -78,21 +82,27 @@
       </div>
       <nav class="project-directory" aria-label="專案目錄">
         <ol>
-          <li><a href="#class-management"><span class="directory-number">01</span><span>班級管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
-          <li><a href="#classroom-management"><span class="directory-number">02</span><span>教室管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="class-management.html"><span class="directory-number">01</span><span>班級管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="classroom-management.html"><span class="directory-number">02</span><span>教室管理系統</span><span class="directory-arrow" aria-hidden="true">↗</span></a></li>
         </ol>
       </nav>
     </section>
     <section class="projects" aria-label="專案列表">
       <article id="class-management">
+        <a class="project-link" href="class-management.html">
         <span class="project-number">01 / PROJECT</span>
         <h2>班級管理系統</h2>
-        <p>介紹專案用途、功能與使用的技術。</p>
+        <p>公司內部系統 · 專案概況、功能畫面與實作紀錄。</p>
+        <span class="project-cta">查看專案 <span aria-hidden="true">↗</span></span>
+        </a>
       </article>
       <article id="classroom-management">
+        <a class="project-link" href="classroom-management.html">
         <span class="project-number">02 / PROJECT</span>
         <h2>教室管理系統</h2>
-        <p>介紹專案用途、功能與使用的技術。</p>
+        <p>公司內部系統 · 專案概況、功能畫面與實作紀錄。</p>
+        <span class="project-cta">查看專案 <span aria-hidden="true">↗</span></span>
+        </a>
       </article>
     </section>
   </main>
