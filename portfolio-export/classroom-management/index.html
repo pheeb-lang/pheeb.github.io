@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light"><title>教室管理｜展示資料</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="./standalone.css"><link rel="stylesheet" href="./src/styles.css"><script type="module" src="./src/instructors.js"></script></head>
+<body><div id="classroom-demo">
+<header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">▦</span> 教室管理 <span class="brand-divider">/</span><span class="brand-sub">課務管理</span></div><span class="building-badge">展示資料 · 星河學苑</span></header>
+<main><nav class="view-nav" aria-label="管理功能"><button type="button" data-view="instructors" aria-pressed="true">教室管理</button></nav>
+    <section id="instructors-view" aria-labelledby="instructors-title">
+      <div class="heading"><div><p class="eyebrow">CLASSROOM MANAGEMENT</p><h1 id="instructors-title">教室管理</h1><p class="intro">依教室、日期與時段顯示預約課程，並保留展示課表與講師示範課堂。</p></div><span class="building-badge">展示資料</span></div>
+      <section class="panel reference-summary" aria-labelledby="reference-title">
+        <h2 id="reference-title">展示課表｜星河創作實驗班 (DEMO01)</h2>
+        <p class="muted">展示資料：所有教室、講師與課程皆為虛構。本機課表保留授課、自習、活動與假期，空白時段維持無排課。</p>
+        <p class="muted">本展示沿用原課表版面及日期捷徑；講師指派僅儲存在此瀏覽器。上午 09:00～12:00、下午 13:30～17:30，預約另含晚間時段。</p>
+        <div class="reference-shortcuts" aria-label="快速查看展示課表"><button type="button" class="secondary-button" data-reference-date="2025-11-04">2025／11 月</button><button type="button" class="secondary-button" data-reference-date="2025-12-01">2025／12 月</button><button type="button" class="secondary-button" data-reference-date="2026-01-06">2026／1 月</button><button type="button" class="secondary-button" data-reference-date="2026-05-04">2026／5 月</button><button type="button" class="secondary-button" data-reference-date="2026-06-04">2026／6 月</button><button type="button" class="secondary-button" data-reference-date="2026-07-01">2026／7 月</button></div>
+      </section>
+      <div class="metrics instructor-metrics">
+        <article class="metric featured"><span>授課課堂總數</span><strong id="session-total">—</strong><small>不含自習、典禮與假日</small></article>
+        <article class="metric"><span>負責講師</span><strong id="instructor-total">—</strong><small>已指派的不同講師</small></article>
+        <article class="metric"><span>待指派負責講師</span><strong id="primary-missing">—</strong><small>需要確認授課人選</small></article>
+        <article class="metric"><span>待安排備選講師</span><strong id="backup-missing">—</strong><small>已有負責講師的課堂</small></article>
+      </div>
+      <section class="panel" aria-labelledby="session-list-title">
+        <form id="session-range-form" class="session-range-form">
+          <div class="field"><label for="session-start-date">選擇起始日期</label><input id="session-start-date" type="date" min="0001-01-01" max="9999-12-25" required aria-describedby="session-calendar-help"></div>
+          <button id="session-daily" type="button" class="secondary-button">返回每日課表</button>
+        </form>
+        <p id="session-calendar-help" class="muted">點選日期後，從當天開始列出連續 6 天的全部教室與三個時段。上方摘要為原有講師示範課堂統計。</p>
+        <div class="table-heading"><h2 id="session-list-title">每日課表</h2><span id="session-count" class="muted" aria-live="polite"></span></div>
+        <nav id="schedule-range-nav" class="schedule-range-nav" aria-label="日期區間切換" hidden>
+          <button id="schedule-range-today" class="secondary-button" type="button">從今天開始</button>
+          <button id="schedule-range-previous" class="secondary-button" type="button" aria-label="前 6 天">←</button>
+          <strong id="schedule-range-label" aria-live="polite"></strong>
+          <button id="schedule-range-next" class="secondary-button" type="button" aria-label="後 6 天">→</button>
+        </nav>
+        <div class="schedule-toolbar">
+          <div class="schedule-date-controls">
+            <button id="schedule-previous" class="secondary-button" type="button" aria-label="前一天">‹</button>
+            <div class="field"><label for="schedule-date">課表日期</label><input id="schedule-date" type="date" required></div>
+            <button id="schedule-next" class="secondary-button" type="button" aria-label="後一天">›</button>
+            <button id="schedule-today" class="secondary-button" type="button">今天</button>
+          </div>
+          <button id="schedule-bookings-refresh" class="secondary-button" type="button">重新載入預約</button>
+          <div class="schedule-legend" aria-label="課表圖例"><span><i class="legend-booking" aria-hidden="true"></i>教室預約</span><span><i class="legend-scheduled" aria-hidden="true"></i>示範課堂</span><span><i class="legend-empty" aria-hidden="true"></i>無排課</span></div>
+        </div>
+        <p id="reference-day-note" class="muted" role="status"></p>
+        <p id="schedule-bookings-status" class="status" role="status" aria-live="polite"></p>
+        <div class="table-scroll schedule-scroll" role="region" aria-label="教室課表，包含全部時段，可橫向捲動" tabindex="0"><table class="schedule-table" aria-labelledby="session-list-title"><thead id="schedule-head"></thead><tbody id="sessions-body"></tbody></table></div>
+        <p id="sessions-empty" class="empty" hidden></p>
+      </section>
+      <p id="assignment-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+    <dialog id="assignment-dialog" aria-labelledby="assignment-title">
+      <form id="assignment-form"><h2 id="assignment-title">編輯講師指派</h2><p id="assignment-session" class="muted"></p>
+        <div class="field"><label for="primary-instructor">負責講師</label><select id="primary-instructor"></select></div>
+        <div class="field"><label for="backup-instructor">備選講師</label><select id="backup-instructor"></select></div>
+        <p id="assignment-error" class="form-error" role="alert"></p>
+        <div class="dialog-actions"><button id="assignment-cancel" class="secondary-button" type="button">取消</button><button type="submit">儲存指派</button></div>
+      </form>
+    </dialog>
+<footer>展示資料 · 僅供作品集操作體驗，不連線至任何後端。</footer></main></div></body></html>

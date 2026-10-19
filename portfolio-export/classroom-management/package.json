@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-classroom-management",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/demo.test.mjs",
+    "check": "python tools/verify.py",
+    "preview": "python -m http.server 8765 --bind 127.0.0.1"
+  }
+}

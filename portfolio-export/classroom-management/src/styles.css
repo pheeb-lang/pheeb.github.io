@@ -1,0 +1,170 @@
+#classroom-demo{font-family:Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#21372f;background:#f5f7f4;font-synthesis:none;--accent:#23714e;--muted:#6b7a72;--line:#e2e8e2}
+#classroom-demo *{box-sizing:border-box}
+#classroom-demo{margin:0}
+#classroom-demo .topbar{height:76px;padding:0 5vw;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+#classroom-demo .brand{display:flex;align-items:center;gap:13px;font-weight:700}
+#classroom-demo .brand-icon{background:#e8f0e9;color:var(--accent);padding:6px 10px;font-size:25px;border-radius:10px}
+#classroom-demo .brand-divider{color:#b8c1ba;font-weight:400}
+#classroom-demo .brand-sub{font-size:14px;font-weight:400;color:var(--muted)}
+#classroom-demo .building-badge{font-size:12px;background:#edf3eb;color:#436443;border:1px solid #dce7d9;padding:8px 12px;border-radius:20px}
+#classroom-demo main{max-width:1280px;margin:auto;padding:48px 32px 20px}
+#classroom-demo .heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px}
+#classroom-demo .eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:var(--accent);margin:0 0 12px}
+#classroom-demo h1{font-size:clamp(25px,3vw,36px);letter-spacing:-1px;margin:0 0 12px}
+#classroom-demo h2{font-size:17px;margin:0 0 18px}
+#classroom-demo .intro{color:var(--muted);font-size:14px;margin:0}
+#classroom-demo .panel{background:white;border:1px solid var(--line);border-radius:16px;padding:26px}
+#classroom-demo .field{flex:1;max-width:320px}
+#classroom-demo label{display:block;font-size:13px;font-weight:600;margin-bottom:9px}
+#classroom-demo input{font:inherit;width:100%;min-height:47px;border:1px solid #ced9cf;border-radius:8px;background:#fff;padding:10px 12px;color:#21372f}
+#classroom-demo button{font:inherit;min-height:47px;border:0;border-radius:8px;padding:11px 23px;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;gap:20px}
+#classroom-demo button:hover{background:#185c3d}
+#classroom-demo button:disabled{opacity:.65;cursor:wait}
+#classroom-demo button:focus-visible,#classroom-demo input:focus-visible,#classroom-demo summary:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+#classroom-demo .rule{font-size:12px;color:var(--muted);margin:19px 0 0;line-height:1.7}
+#classroom-demo .status{font-size:14px;color:var(--muted);padding:28px 0;line-height:1.7}
+#classroom-demo .status.error{color:#a32929;background:#fff0ed;border:1px solid #f3d1ca;border-radius:10px;padding:16px;margin:24px 0}
+#classroom-demo .status.success{color:var(--accent)}
+#classroom-demo .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+#classroom-demo .metric{padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:13px}
+#classroom-demo .metric>span{font-size:13px;color:var(--muted)}
+#classroom-demo .metric strong{font-size:31px;font-weight:650;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+#classroom-demo .metric small{font-size:11px;color:var(--muted);line-height:1.6}
+#classroom-demo .metric.featured{background:#eaf2e7;border-color:#d3e0cb}
+#classroom-demo .metric.featured strong{color:var(--accent)}
+#classroom-demo .muted{font-size:12px;color:var(--muted);line-height:1.8}
+#classroom-demo details{font-size:12px;line-height:1.8}
+#classroom-demo summary{cursor:pointer;color:var(--accent)}
+#classroom-demo .table-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+#classroom-demo .table-heading h2{margin:0}
+#classroom-demo .table-scroll{overflow-x:auto}
+#classroom-demo table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+#classroom-demo th{font-weight:500;color:var(--muted);background:#f7f9f6}
+#classroom-demo th,#classroom-demo td{padding:16px 15px;border-bottom:1px solid var(--line);text-align:right}
+#classroom-demo th:first-child,#classroom-demo td:first-child{text-align:left}
+#classroom-demo td{font-variant-numeric:tabular-nums}
+#classroom-demo td:last-child{font-weight:600;color:var(--accent)}
+#classroom-demo .empty{text-align:center;color:var(--muted);padding:28px;font-size:14px}
+#classroom-demo footer{color:#88958b;text-align:center;font-size:11px;padding:30px 0;line-height:1.8}
+#classroom-demo [hidden]{display:none!important}
+@media(max-width:850px){#classroom-demo .metrics{grid-template-columns:repeat(2,1fr)}
+#classroom-demo .heading{align-items:flex-start;gap:20px}
+#classroom-demo .field{max-width:none}
+}
+@media(max-width:520px){#classroom-demo main{padding:30px 16px 15px}
+#classroom-demo .topbar{height:65px;padding:0 16px}
+#classroom-demo .brand{gap:8px;font-size:14px}
+#classroom-demo .brand-sub,#classroom-demo .brand-divider{display:none}
+#classroom-demo .building-badge{font-size:11px}
+#classroom-demo .panel{padding:20px}
+#classroom-demo .field{flex-basis:100%}
+#classroom-demo .metric{padding:18px}
+#classroom-demo .metric strong{font-size:27px}
+#classroom-demo .metric small{font-size:10px}
+#classroom-demo .metrics{gap:12px}
+}
+#classroom-demo .schedule-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+#classroom-demo .schedule-date-controls{display:flex;align-items:flex-end;gap:8px}
+#classroom-demo .schedule-date-controls .field{width:180px;flex:none}
+#classroom-demo .schedule-date-controls button{justify-content:center;padding:10px 16px}
+#classroom-demo .schedule-legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:#64717c;padding-bottom:12px}
+#classroom-demo .schedule-legend>span{display:flex;align-items:center;gap:6px}
+#classroom-demo .schedule-legend i{display:inline-block;width:16px;height:16px;border:1px solid #8ba3bc}
+#classroom-demo .legend-scheduled{background:#d2d2d2}
+#classroom-demo .legend-empty{background:#fff}
+#classroom-demo .schedule-scroll{border:1px solid #356b9d}
+#classroom-demo .schedule-table{table-layout:fixed;min-width:900px;white-space:normal;color:#1e3447}
+#classroom-demo .schedule-table th,#classroom-demo .schedule-table td{border:1px solid #356b9d;padding:0;text-align:left;font-weight:400;color:inherit}
+#classroom-demo .schedule-table tr>*:first-child{border-left:0}
+#classroom-demo .schedule-table tr>*:last-child{border-right:0}
+#classroom-demo .schedule-table thead th{height:52px;padding:12px;background:#d0d0d0;color:#111;border-top:0}
+#classroom-demo .schedule-table thead .schedule-date-heading{width:190px;background:#569bd0;color:white;font-size:14px;font-weight:700}
+#classroom-demo .schedule-table .schedule-room{position:sticky;left:0;z-index:1;background:#ededed;color:#0085b6;padding:16px 12px;vertical-align:top;font-size:13px}
+#classroom-demo .schedule-table .schedule-cell{height:52px;vertical-align:top;background:white}
+#classroom-demo .schedule-table .schedule-cell.scheduled{background:#c6c6c6}
+#classroom-demo .schedule-table .schedule-cell.filtered{background:repeating-linear-gradient(45deg,#e3e3e3 0 12px,#cfcfcf 12px 24px)}
+#classroom-demo .schedule-table tbody tr:last-child>*{border-bottom:0}
+#classroom-demo .schedule-cell-label{display:block;padding:18px 12px;color:#7b8792;font-size:12px}
+#classroom-demo .schedule-cell.filtered .schedule-cell-label{color:#46515b}
+#classroom-demo .schedule-session{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;min-height:168px;padding:14px;border-radius:0;background:transparent;color:#1e3447;text-align:left;line-height:1.5;overflow-wrap:anywhere}
+#classroom-demo .schedule-session:hover{background:#b8c9d8}
+#classroom-demo .schedule-session:focus-visible{outline:3px solid #155d99;outline-offset:-4px}
+#classroom-demo .schedule-session+.schedule-session{border-top:1px dashed #356b9d}
+#classroom-demo .session-time{font-size:12px;color:#46515b;font-variant-numeric:tabular-nums}
+#classroom-demo .session-title{font-size:15px}
+#classroom-demo .session-class,#classroom-demo .session-instructors{font-size:12px}
+#classroom-demo .session-lesson{font-size:11px;color:#56626c}
+#classroom-demo .schedule-session .assignment-badge{font-size:11px;padding:3px 8px}
+#classroom-demo .schedule-scroll:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+@media(max-width:520px){#classroom-demo .schedule-date-controls{width:100%;gap:6px}
+#classroom-demo .schedule-date-controls .field{width:auto;flex:1;min-width:0}
+#classroom-demo .schedule-date-controls button{padding:10px 12px}
+#classroom-demo .schedule-legend{padding-bottom:0;gap:12px}
+#classroom-demo .schedule-table thead .schedule-date-heading{width:150px}
+#classroom-demo .schedule-toolbar{gap:14px}
+}
+#classroom-demo .reference-summary{margin-bottom:24px}
+#classroom-demo .reference-summary h2{margin-bottom:10px}
+#classroom-demo .reference-shortcuts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+#classroom-demo .reference-shortcuts button{font-size:13px}
+#classroom-demo .schedule-activity{cursor:default}
+#classroom-demo .schedule-activity.self-study,#classroom-demo .schedule-activity.self-study:hover{background:#f0edf7}
+#classroom-demo .schedule-activity.event,#classroom-demo .schedule-activity.event:hover{background:#f6eedb}
+#classroom-demo .schedule-activity.holiday,#classroom-demo .schedule-activity.holiday:hover{background:#fae5f1;color:#8b315e}
+#classroom-demo .assignment-badge.not-required{background:#edf0f4;color:#536170}
+#classroom-demo #reference-day-note:empty{display:none}
+#classroom-demo .schedule-range-nav{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:20px 0}
+#classroom-demo .schedule-range-nav strong{font-size:18px;font-variant-numeric:tabular-nums}
+#classroom-demo .schedule-range-nav button{justify-content:center}
+#classroom-demo .schedule-table .schedule-day-heading th{height:44px;padding:10px 12px;background:#d0d0d0;color:#111;border-top:2px solid #356b9d}
+#classroom-demo .schedule-table .schedule-day-heading .schedule-date-heading{width:190px;background:#569bd0;color:white;font-weight:700}
+#classroom-demo .schedule-table .schedule-day-note td{padding:8px 12px;background:#f1f6fa;font-size:12px;color:#536170}
+#classroom-demo .schedule-week .schedule-session{min-height:0;padding:10px;gap:4px}
+#classroom-demo .schedule-week .schedule-room{padding:12px}
+#classroom-demo .schedule-week .schedule-cell{height:42px}
+#classroom-demo .schedule-week .schedule-cell-label{padding:12px}
+#classroom-demo .schedule-week .session-title{font-size:13px}
+#classroom-demo .schedule-week .session-lesson{display:none}
+@media(max-width:520px){#classroom-demo .schedule-range-nav{gap:8px}
+#classroom-demo .schedule-range-nav strong{font-size:14px}
+#classroom-demo .schedule-range-nav button{padding:10px}
+#classroom-demo .schedule-table .schedule-day-heading .schedule-date-heading{width:150px}
+}
+#classroom-demo .session-range-form{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+#classroom-demo .session-range-form .field{min-width:170px}
+#classroom-demo .session-range-form button{justify-content:center;white-space:nowrap}
+#classroom-demo .session-range-form~.table-heading{gap:16px;flex-wrap:wrap}
+#classroom-demo #reference-day-note{white-space:pre-line}
+#classroom-demo #session-range-results:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+@media(max-width:520px){#classroom-demo .session-range-form button{width:100%}
+}
+#classroom-demo .view-nav{display:flex;gap:8px;margin-bottom:32px;border-bottom:1px solid var(--line);padding-bottom:14px}
+#classroom-demo .view-nav button{background:transparent;color:var(--muted);font-size:14px;gap:0}
+#classroom-demo .view-nav button[aria-pressed="true"]{background:#e8f0e9;color:var(--accent);font-weight:700}
+#classroom-demo .view-nav button:hover{background:#edf3eb}
+#classroom-demo select{font:inherit;width:100%;min-height:47px;border:1px solid #ced9cf;border-radius:8px;background:#fff;padding:10px 12px;color:#21372f}
+#classroom-demo select:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+#classroom-demo .assignment-badge{display:inline-block;font-size:11px;padding:6px 10px;border-radius:20px}
+#classroom-demo .assignment-badge.complete{background:#eaf2e7;color:var(--accent)}
+#classroom-demo .assignment-badge.backup-missing{background:#fff4df;color:#8c611d}
+#classroom-demo .assignment-badge.primary-missing{background:#fff0ed;color:#a32929}
+#classroom-demo .secondary-button{background:#f3f7f2;color:var(--accent);border:1px solid #d7e3d6}
+#classroom-demo .secondary-button:hover{background:#e3ede0}
+#classroom-demo dialog{width:min(520px,calc(100% - 32px));padding:28px;border:1px solid var(--line);border-radius:16px;color:#21372f;box-shadow:0 20px 80px #142f2933}
+#classroom-demo dialog::backdrop{background:#172d2666}
+#classroom-demo dialog .field{max-width:none;margin-top:20px}
+#classroom-demo dialog h2{margin-bottom:10px}
+#classroom-demo #assignment-session{margin:0;overflow-wrap:anywhere}
+#classroom-demo .dialog-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+#classroom-demo .form-error{color:#a32929;font-size:13px;line-height:1.7;min-height:22px;margin:16px 0 0}
+#classroom-demo #assignment-status:empty{display:none}
+@media(max-width:520px){#classroom-demo .view-nav button{padding:10px 15px}
+#classroom-demo dialog{padding:22px}
+}
+#classroom-demo .view-nav{flex-wrap:wrap}
+#classroom-demo .schedule-table .schedule-cell.booked{background:#428bcc;color:#fff}
+#classroom-demo .schedule-booking,#classroom-demo .schedule-booking:hover{background:transparent;color:#fff;cursor:default;min-height:0}
+#classroom-demo .schedule-booking .session-time{color:#fff}
+#classroom-demo .legend-booking{background:#428bcc}
+#classroom-demo #schedule-bookings-status{padding:8px 0;margin:0 0 16px}
+#classroom-demo #schedule-bookings-status.error{padding:12px}
