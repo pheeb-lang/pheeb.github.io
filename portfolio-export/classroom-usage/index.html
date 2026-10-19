@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light"><title>教室使用概況｜展示資料</title>
+  <link rel="stylesheet" href="./src/styles.css">
+  <script defer src="./src/mock-data.js"></script>
+  <script defer src="./src/main.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">▦</span> 教室管理 <span class="brand-divider">/</span> <span class="brand-sub">課務管理</span></div><span class="building-badge">展示資料 · 森光學苑</span></header>
+  <main>
+    <div id="utilization-view">
+    <div class="heading"><div><p class="eyebrow">SPACE UTILIZATION</p><h1>每間教室，使用得如何？</h1><p class="intro">選擇日期範圍，查看森光學苑各教室的預約使用率。</p></div><span class="timezone">台灣時間 · UTC+8</span></div>
+    <section class="panel query-panel" aria-labelledby="query-title">
+      <h2 id="query-title">查詢範圍</h2>
+      <form id="query-form"><div class="field"><label for="start-date">開始日期</label><input id="start-date" name="start_date" type="date" required></div><span class="date-arrow" aria-hidden="true">→</span><div class="field"><label for="end-date">結束日期</label><input id="end-date" name="end_date" type="date" required></div><button id="submit-button" type="submit">查詢使用率 <span aria-hidden="true">↗</span></button></form>
+      <p class="rule">週一至週日 09:00–12:00、13:30–17:30、18:45–21:45 開放（每日共 10 小時） · 模擬假日不開放 · 日期範圍包含開始及結束日</p>
+      <p class="rule">講師休息室、線上教室01、線上教室02不列入教室使用率統計。</p>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite">選好日期後，按「查詢使用率」取得統計結果。</div>
+    <section id="results" hidden aria-label="查詢結果">
+      <div class="result-heading"><h2>使用概況</h2><p id="range-label"></p></div>
+      <div class="metrics">
+        <article class="metric featured"><span>整棟預約使用率</span><strong id="overall-rate">—</strong><small>占用時數 ÷ 可開放時數</small></article>
+        <article class="metric"><span>預約占用時數</span><strong id="booked-hours">—</strong><small>重疊預約時間合併計算</small></article>
+        <article class="metric"><span>可開放時數</span><strong id="available-hours">—</strong><small>所有教室可開放時數合計</small></article>
+        <article class="metric"><span>納入統計的教室</span><strong id="room-count">—</strong><small>包含沒有預約的教室</small></article>
+      </div>
+      <div class="detail-grid">
+        <section class="panel comparison" aria-labelledby="comparison-title"><h2 id="comparison-title">教室使用率比較</h2><p class="muted">依使用率由高至低排列</p><div id="bars"></div></section>
+        <section class="panel calculation" aria-labelledby="calculation-title"><h2 id="calculation-title">本次計算依據</h2><dl><div><dt>每日開放</dt><dd>10 小時</dd></div><div><dt>開放日數</dt><dd id="open-days">—</dd></div><div><dt>假日排除</dt><dd id="holiday-count">—</dd></div></dl><p class="muted">只計入有效預約在三段開放時段內的占用時間，午間及傍晚休息時段不計入。此指標反映預約情形。</p><details><summary>查看排除的假日</summary><ul id="holidays"></ul></details></section>
+      </div>
+      <section class="panel table-panel" aria-labelledby="table-title"><div class="table-heading"><h2 id="table-title">各教室統計</h2><span id="table-count" class="muted"></span></div><div class="table-scroll"><table><thead><tr><th scope="col">教室名稱</th><th scope="col">有效預約次數</th><th scope="col">占用時數</th><th scope="col">可開放時數</th><th scope="col">使用率</th></tr></thead><tbody id="rooms-body"></tbody></table></div><p id="empty-rooms" class="empty" hidden>這個範圍沒有可納入統計的教室。</p></section>
+    </section>
+    </div>
+    <footer>展示資料：所有教室、預約及假日均為虛構 · 在瀏覽器本機計算</footer>
+  </main>
+</body>
+</html>
