@@ -72,7 +72,20 @@
             <div><dt>設計考量</dt><dd>以單一對話入口減少查找負擔，透過空白檢查、2000 字元上限及等待時鎖定輸入避免無效或重複送出；中文組字期間不觸發送出。回覆採純文字呈現，訊息區可捲動，並提供新訊息朗讀提示及減少動畫偏好支援。</dd></div>
           </dl>
         </article>
-        <article class="feature"><h3>核心功能二｜待填寫名稱</h3><p>待補充：描述另一個重要任務，以及你如何安排操作流程。</p><figure><div class="image-slot"><strong>功能畫面 02</strong><span>若功能分布在多頁，可依操作順序分別展示</span></div><figcaption>待補充：這個畫面與前後步驟的關係。</figcaption></figure></article>
+        <article class="feature" aria-labelledby="class-course-people-title">
+          <h3 id="class-course-people-title">核心功能二｜班級、課程與人員整合管理</h3>
+          <p>整合班別、各期班級、班級課程與學生名單，讓管理人員從班別逐層進入班級，完成開課資料維護、講師安排及學生匯入。以下以管理員角色展示完整流程，所有班級、課程與人員均使用虛構資料。</p>
+          <figure class="interactive-demo">
+            <div class="demo-toolbar"><span>互動展示 · 全部使用虛構資料</span><a href="portfolio-export/class-course-people-management/" target="_blank" rel="noopener">獨立開啟展示 ↗</a></div>
+            <iframe class="class-course-people-demo-frame" src="portfolio-export/class-course-people-management/" title="班級、課程與人員整合管理互動展示（虛構資料）" loading="lazy" aria-describedby="class-course-people-caption"></iframe>
+            <figcaption id="class-course-people-caption">建議從「班別管理」選擇網頁應用開發班別，進入班級與班級課程，再至「我的學生」體驗名單匯入。匯入請使用展示頁提供的虛構 CSV 範例；變更僅保存在目前瀏覽器，可由「重設展示資料」還原，不會建立真實帳號或發布 Moodle 課程。手機可在表格內橫向捲動。</figcaption>
+          </figure>
+          <dl class="summary-list feature-notes">
+            <div><dt>關鍵操作</dt><dd>依班級代號、教務或導師搜尋並切換分頁，透過列內新增或 CSV 匯入建立班級與課程草稿；在班級課程調整時數、選擇講師，自動儲存後可拖曳排序，或點選移動圖示指定位置。發布前可確認或取消，學生名單則可下載範例後匯入並檢查結果。</dd></div>
+            <div><dt>資訊層級</dt><dd>以「班別 → 班級 → 班級課程」呈現共用課綱與各期開課的關係；班級列表集中顯示代號、期間、地點與負責人，課程列表再呈現時數、講師及發布狀態。「我的班級」與「我的學生」採左右欄工作區，先選班級，再查看所屬課程或名單。</dd></div>
+            <div><dt>設計考量</dt><dd>用搜尋、分頁及列內操作減少跨頁維護，並以儲存狀態與通知回饋操作結果。匯入先驗證整批資料，遇到重複或衝突時不留下部分異動；發布前檢查講師、時數與資料關聯，並要求確認。排序同時提供拖曳與位置選擇，方便鍵盤及觸控操作。</dd></div>
+          </dl>
+        </article>
         <article class="feature"><h3>核心功能三｜待填寫名稱</h3><p>待補充：選擇最能呈現個人貢獻的功能，說明遇到的限制與解法。</p><figure><div class="image-slot"><strong>功能畫面 03</strong><span>可放置操作結果、細節畫面或修改前後的比較</span></div><figcaption>待補充：解法與實際改善之處。</figcaption></figure></article>
       </div>
     </section>

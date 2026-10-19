@@ -1,0 +1,39 @@
+/* Local adaptations of class_service, offering_service, person_resolver,
+ * instructor_service and student_import_service. GPL-3.0-or-later.
+ * Demonstration rules, not authentication or security controls. */
+globalThis.DemoDomain = (()=>{
+ const fail=m=>{throw new Error(m);};
+ const next=rows=>Math.max(0,...rows.map(x=>x.id))+1;
+ const normal=s=>s.trim().replace(/\s+/g,' ').toLowerCase();
+ const email=s=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+ const resolve=(db,name)=>{const a=db.persons.filter(p=>p.active&&p.name===name.trim());return a.length===1?a[0]:null;};
+ const date=s=>/^\d{4}-\d{2}-\d{2}$/.test(s)&&!isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
+ function generate(db,cid){const c=db.classes.find(c=>c.id===cid)||fail('班級不存在');let count=0;
+  db.curricula.filter(x=>x.active&&x.classgroupid===c.classgroupid).forEach(cur=>{const old=db.offerings.find(o=>o.classid===cid&&o.coursemasterid===cur.coursemasterid);if(old){old.curriculumid ||=cur.id;return;}db.offerings.push({id:next(db.offerings),classid:cid,classgroupid:c.classgroupid,coursemasterid:cur.coursemasterid,curriculumid:cur.id,actualhours:cur.plannedhours,instructorpersonid:null,instructortext:'',sortorder:cur.sortorder,status:'draft',source:'curriculum',courseid:null});count++;});return count;
+ }
+ function addClass(db,g,data){const d={...data};Object.keys(d).forEach(k=>d[k]=String(d[k]).trim());
+  if(!/^[A-Za-z0-9_-]+$/.test(d.code))fail('班級代號僅限英數字、底線與連字號');
+  if(!d.name||!d.externalcode||!d.location)fail('班級名稱、外顯碼與開課地為必填');
+  if(!date(d.startdate)||!date(d.enddate)||d.enddate<d.startdate)fail('日期無效或結束日期早於開課日');
+  if(db.classes.some(c=>c.classgroupid===g&&c.code.toLowerCase()===d.code.toLowerCase()))fail('班級代號重複');
+  const a=resolve(db,d.academicstaffname||''),t=resolve(db,d.tutorname||'');
+  if((a&&t&&a.id===t.id)||((!a||!t)&&normal(d.academicstaffname||'')&&normal(d.academicstaffname||'')===normal(d.tutorname||'')))fail('教務人員與導師不得為同一人');
+  const c={...d,id:next(db.classes),classgroupid:g,status:'ready',address:''};db.classes.push(c);generate(db,c.id);return c;
+ }
+ function assignment(db,id,h,value){const o=db.offerings.find(x=>x.id===id)||fail('班級課程不存在');if(!Number.isFinite(+h)||+h<=0)fail('課程時數必須大於 0');
+  if(value.startsWith('person:')){const p=db.persons.find(p=>p.id===+value.slice(7)&&p.active&&p.userid);if(!p)fail('請選擇有效且已連結帳號的講師');o.instructorpersonid=p.id;o.instructortext=p.name;}
+  else if(value.startsWith('text:')){const text=decodeURIComponent(value.slice(5)).trim();if(!text)fail('講師選擇無效');o.instructorpersonid=null;o.instructortext=text;}
+  // Original endpoint leaves assignment unchanged for the empty selection.
+  o.actualhours=+h;return o;
+ }
+ function reorder(db,cid,ids){const os=db.offerings.filter(o=>o.classid===cid);if(ids.length!==os.length||new Set(ids).size!==ids.length||ids.some(id=>!os.some(o=>o.id===id)))fail('課程排序必須完整且不得重複');ids.forEach((id,i)=>db.offerings.find(o=>o.id===id).sortorder=(i+1)*10);}
+ function publish(db,ids){const os=ids.map(id=>db.offerings.find(o=>o.id===id)||fail('課程不存在'));os.forEach(o=>{if(!['draft','error'].includes(o.status))fail('只有草稿或錯誤狀態可發布');if(!o.instructortext.trim())fail('發布前必須指定講師');if(!(o.actualhours>0))fail('課程時數必須大於 0');const c=db.classes.find(c=>c.id===o.classid),g=db.programs.find(g=>g.id===c.classgroupid);if(o.classgroupid!==g.id||!c.externalcode.toUpperCase().startsWith(g.externalprefix.toUpperCase())||!new RegExp('^'+g.externalprefix+'[A-Z0-9_-]+$','i').test(c.externalcode))fail('外顯碼系列或班別關聯不符');if(o.curriculumid&&!db.curricula.some(x=>x.id===o.curriculumid&&x.classgroupid===g.id))fail('課綱關聯錯誤');});os.forEach(o=>o.status='published');return os.length;}
+ function instructor(db,name,username,address){name=name.trim().replace(/\s+/g,' ');username=username.trim().toLowerCase();address=address.trim().toLowerCase();if(!name||! /^[a-z0-9_.@-]+$/.test(username)||!email(address))fail('請填寫有效姓名、帳號及電子郵件');const es=db.users.filter(u=>!u.deleted&&u.email.toLowerCase()===address),us=db.users.find(u=>!u.deleted&&u.username===username);if(es.length>1)fail('電子郵件對應多個帳號');if((us&&!es[0])||(!us&&es[0])||(us&&es[0]&&us.id!==es[0].id))fail('講師帳號與電子郵件不一致');let u=us;if(!u){u={id:next(db.users),username,email:address,firstname:name,lastname:'',deleted:0,suspended:0};db.users.push(u);}let p=db.persons.find(p=>p.userid===u.id);if(p)Object.assign(p,{name,email:address,active:1});else{p={id:next(db.persons),userid:u.id,name,username,email:address,active:1};db.persons.push(p);}return p;
+ }
+ function students(db,cid,rows){const seen=new Set(),result={created:0,existing:0,imported:0};if(!rows.length)fail('檔案沒有可匯入的學生');for(const [i,row] of rows.entries()){const username=(row.username||'').trim().toLowerCase().replace(/[^a-z0-9_.@-]/g,''),firstname=(row.firstname||'').trim(),lastname=(row.lastname||'').trim(),address=(row.email||'').trim().toLowerCase();if(!username||!firstname||!lastname||!email(address))fail(`第 ${i+2} 列學生資料無效`);if(seen.has(username))fail('檔案內帳號重複：'+username);seen.add(username);let u=db.users.find(u=>u.username===username);if(!u){const es=db.users.filter(u=>!u.deleted&&u.email.toLowerCase()===address);if(es.length>1)fail('電子郵件對應多個帳號');u=es[0];}if(u){if(u.deleted||u.suspended||u.email.toLowerCase()!==address)fail('學生帳號衝突：'+username);result.existing++;}else{u={id:next(db.users),username,firstname,lastname,email:address,deleted:0,suspended:0};db.users.push(u);result.created++;}const member=db.members.find(m=>m.classid===cid&&m.userid===u.id),values={classid:cid,userid:u.id,idnumber:row.idnumber||'',active:1};if(member)Object.assign(member,values);else db.members.push(values);result.imported++;}return result;}
+ function offerings(db,cid,rows){if(!rows.length)fail('檔案沒有可匯入的課程');const seen=new Set();for(const [i,r] of rows.entries()){const code=r.code.trim().toUpperCase();if(!code||!r.name.trim()||!r.instructor.trim()||!Number.isFinite(+r.hours)||+r.hours<=0)fail(`第 ${i+2} 列課程代號、名稱、正時數及講師為必填`);if(seen.has(code))fail('檔案內課程代號重複');seen.add(code);let m=db.masters.find(m=>m.code.toUpperCase()===code);if(m){m.name=r.name.trim();m.active=1;}else{m={id:next(db.masters),code,name:r.name.trim(),active:1};db.masters.push(m);}let o=db.offerings.find(o=>o.classid===cid&&o.coursemasterid===m.id);if(o&&!['draft','error'].includes(o.status))fail('無法覆寫已發布班級課程：'+code);const p=resolve(db,r.instructor),c=db.classes.find(c=>c.id===cid);if(!o){o={id:next(db.offerings),classid:cid,classgroupid:c.classgroupid,coursemasterid:m.id,curriculumid:null,sortorder:0,courseid:null};db.offerings.push(o);}Object.assign(o,{actualhours:+r.hours,instructorpersonid:p?.id||null,instructortext:r.instructor.trim(),status:'draft',source:'import'});}return rows.length;}
+ // CSV follows the PHP single-line parser: comma, tab or semicolon; quoted fields and escaped quotes.
+ function csv(text){const lines=text.replace(/^\uFEFF/,'').split(/\r\n|\n|\r/);const candidates=[',','\t',';'];const delim=candidates.sort((a,b)=>lines[0].split(b).length-lines[0].split(a).length)[0];if(!lines[0].includes(delim))fail('匯入標頭格式無效');const matrix=lines.map(line=>{let out=[],value='',quoted=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(quoted&&line[i+1]==='"'){value+='"';i++;}else quoted=!quoted;}else if(ch===delim&&!quoted){out.push(value.trim());value='';}else value+=ch;}if(quoted)fail('展示版不支援跨行引號欄位');out.push(value.trim());return out;});const headers=matrix.shift().map(x=>x.toLowerCase());return {headers,rows:matrix.filter(r=>r.some(Boolean))};}
+ function columns(parsed,defs){const indexes={};for(const [key,aliases] of Object.entries(defs)){const i=parsed.headers.findIndex(h=>aliases.includes(h));if(i<0&&!['idnumber','password'].includes(key))fail('缺少必要欄位：'+aliases[0]);indexes[key]=i;}return parsed.rows.map(row=>Object.fromEntries(Object.entries(indexes).map(([key,i])=>[key,i<0?'':row[i]||''])));}
+ return {addClass,generate,assignment,reorder,publish,instructor,students,offerings,csv,columns};
+})();

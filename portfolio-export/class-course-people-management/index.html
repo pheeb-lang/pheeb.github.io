@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>班級、課程與人員整合管理｜互動展示</title>
+<link rel="stylesheet" href="assets/compat.css"><link rel="stylesheet" href="assets/original.css">
+<script defer src="assets/data.js"></script><script defer src="assets/domain.js"></script><script defer src="assets/app.js"></script></head>
+<body><div id="classgroup-demo" class="local-classgroup-wide local-classgroup-mycourses-page">
+<header class="demo-tools"><strong>展示資料：所有操作僅影響本機模擬資料</strong><span>展示角色：網站管理員（既有角色）</span><button id="reset" type="button" class="btn btn-secondary">重設展示資料（展示工具）</button></header>
+<nav class="demo-nav" aria-label="班級管理"><a href="#dashboard">班別管理</a><a href="#classes?classgroupid=1">班級</a><a href="#mycourses">我的班級</a><a href="#students?classid=1">我的學生</a></nav>
+<div id="notice" role="status" aria-live="polite"></div><main id="app" class="local-classgroup-mycourses"></main>
+<footer class="demo-footer">教材版本管理、AI 小幫手、學習統計報表及 Moodle 課程內容未納入展示。<a href="README.md">來源與使用說明</a> · GPL-3.0-or-later</footer>
+<dialog id="confirmation" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-message"></p><div class="local-classgroup-class-actions"><button id="confirm-yes" class="btn btn-primary">繼續</button><button id="confirm-no" class="btn btn-secondary">取消</button></div></dialog>
+</div></body></html>

@@ -1,0 +1,577 @@
+/* Relevant workspace, class table, offering and student rules copied from local/classgroup/styles.css; scoped and unused Moodle shell/standard-course rules omitted. GPL-3.0-or-later. */
+
+#classgroup-demo .local-classgroup-classes-table{
+    min-width: 92rem;
+    width: 100%;
+}
+#classgroup-demo .local-classgroup-classes-table th,
+#classgroup-demo .local-classgroup-classes-table td{
+    vertical-align: middle;
+}
+#classgroup-demo .local-classgroup-classes-table .form-control{
+    min-width: 0;
+    width: 100%;
+}
+#classgroup-demo .local-classgroup-mycourses{
+    color: #172033;
+    margin: 0 auto;
+    max-width: 112rem;
+}
+#classgroup-demo .local-classgroup-myhero{
+    align-items: end;
+    background: linear-gradient(125deg, #172a56 0%, #2458a6 58%, #3e82d7 100%);
+    border-radius: 0 0 1.75rem 1.75rem;
+    box-shadow: 0 1.25rem 3rem rgba(24, 58, 112, 0.18);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -1rem 2rem;
+    min-height: 15rem;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    position: relative;
+}
+#classgroup-demo .local-classgroup-myhero::after{
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    content: "";
+    height: 24rem;
+    position: absolute;
+    right: -7rem;
+    top: -13rem;
+    width: 24rem;
+}
+#classgroup-demo .local-classgroup-myhero-copy,
+#classgroup-demo .local-classgroup-hero-stats{
+    position: relative;
+    z-index: 1;
+}
+#classgroup-demo .local-classgroup-eyebrow{
+    color: #4174c5;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+#classgroup-demo .local-classgroup-myhero .local-classgroup-eyebrow{
+    color: #bcd6ff;
+}
+#classgroup-demo .local-classgroup-mytitle{
+    color: inherit;
+    font-size: clamp(2.25rem, 4vw, 4rem);
+    font-weight: 750;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    margin: 0;
+}
+#classgroup-demo .local-classgroup-myintro{
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 1.05rem;
+    margin: 1rem 0 0;
+}
+#classgroup-demo .local-classgroup-hero-stats{
+    display: flex;
+    gap: 0.75rem;
+}
+#classgroup-demo .local-classgroup-hero-stat{
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1rem;
+    min-width: 7.5rem;
+    padding: 1rem 1.25rem;
+}
+#classgroup-demo .local-classgroup-hero-stat strong,
+#classgroup-demo .local-classgroup-hero-stat span{
+    display: block;
+}
+#classgroup-demo .local-classgroup-hero-stat strong{
+    font-size: 1.8rem;
+    line-height: 1;
+}
+#classgroup-demo .local-classgroup-hero-stat span{
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    margin-top: 0.45rem;
+}
+#classgroup-demo .local-classgroup-master-detail{
+    align-items: start;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+}
+#classgroup-demo .local-classgroup-class-list,
+#classgroup-demo .local-classgroup-class-courses{
+    background: #fff;
+    border: 1px solid #e7ebf2;
+    border-radius: 1.25rem;
+    box-shadow: 0 0.5rem 2rem rgba(26, 43, 75, 0.07);
+}
+#classgroup-demo .local-classgroup-class-list{
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    position: sticky;
+    top: 4.5rem;
+}
+#classgroup-demo .local-classgroup-class-list-header{
+    align-items: center;
+    border-bottom: 1px solid #edf0f5;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2rem 1.25rem 1rem;
+}
+#classgroup-demo .local-classgroup-class-list-header h2{
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+#classgroup-demo .local-classgroup-class-list-header-actions{
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+}
+#classgroup-demo .local-classgroup-add-class{
+    white-space: nowrap;
+}
+#classgroup-demo .local-classgroup-count-badge,
+#classgroup-demo .local-classgroup-class-course-count{
+    align-items: center;
+    background: #eef4fd;
+    border-radius: 999px;
+    color: #315f9f;
+    display: inline-flex;
+    font-size: 0.72rem;
+    font-weight: 700;
+    justify-content: center;
+    min-height: 1.6rem;
+    min-width: 1.6rem;
+    padding: 0 0.45rem;
+}
+#classgroup-demo .local-classgroup-class-link{
+    align-items: center;
+    border-left: 0.2rem solid transparent;
+    color: #28354a;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin: 0.35rem 0.55rem;
+    padding: 0.85rem 0.8rem;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+#classgroup-demo .local-classgroup-class-link:hover,
+#classgroup-demo .local-classgroup-class-link:focus-visible{
+    background: #f4f7fb;
+    color: #245da8;
+    transform: translateX(0.15rem);
+}
+#classgroup-demo .local-classgroup-class-link.active{
+    background: #eaf2fe;
+    border-left-color: #2f6ec5;
+    color: #1f57a0;
+    font-weight: 600;
+}
+#classgroup-demo .local-classgroup-class-link.active .local-classgroup-class-course-count{
+    background: #2f6ec5;
+    color: #fff;
+}
+#classgroup-demo .local-classgroup-class-link-main{
+    min-width: 0;
+}
+#classgroup-demo .local-classgroup-class-code,
+#classgroup-demo .local-classgroup-class-name{
+    display: block;
+}
+#classgroup-demo .local-classgroup-class-name{
+    color: #68758a;
+    font-size: 0.875rem;
+    margin-top: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#classgroup-demo .local-classgroup-class-courses{
+    min-width: 0;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+#classgroup-demo .local-classgroup-course-header{
+    align-items: start;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+#classgroup-demo .local-classgroup-selected-title{
+    color: #172033;
+    font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+    font-weight: 730;
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+#classgroup-demo .local-classgroup-class-period{
+    color: #7b8799;
+    font-size: 0.86rem;
+    margin-top: 0.65rem;
+}
+#classgroup-demo .local-classgroup-class-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+#classgroup-demo .local-classgroup-class-actions .btn{
+    border-radius: 0.7rem;
+    padding: 0.62rem 1rem;
+}
+#classgroup-demo .local-classgroup-student-roster{
+    border-bottom: 1px solid #edf0f4;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+}
+#classgroup-demo .local-classgroup-student-roster-header{
+    align-items: center;
+    display: flex;
+    gap: 0.65rem;
+    margin-bottom: 0.8rem;
+}
+#classgroup-demo .local-classgroup-student-roster-header h3{
+    color: #26364f;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+#classgroup-demo .local-classgroup-student-table{
+    margin-bottom: 0;
+}
+#classgroup-demo .local-classgroup-student-table th:first-child,
+#classgroup-demo .local-classgroup-student-table td:first-child{
+    width: 40%;
+}
+#classgroup-demo .local-classgroup-course-grid{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+#classgroup-demo .local-classgroup-course-card{
+    background: linear-gradient(180deg, #fff 0%, #fbfcfe 100%);
+    border: 1px solid #e5eaf1;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 15rem;
+    padding: 1.3rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+#classgroup-demo .local-classgroup-course-card:hover{
+    border-color: #b9cee9;
+    box-shadow: 0 0.85rem 2rem rgba(32, 75, 133, 0.11);
+    transform: translateY(-0.2rem);
+}
+#classgroup-demo .local-classgroup-course-card-top,
+#classgroup-demo .local-classgroup-course-footer{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+#classgroup-demo .local-classgroup-course-kicker{
+    color: #617087;
+    font-size: 0.75rem;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+#classgroup-demo .local-classgroup-status{
+    background: #eaf8f0;
+    border-radius: 999px;
+    color: #207348;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.3rem 0.6rem;
+}
+#classgroup-demo .local-classgroup-status::before{
+    background: #39a86e;
+    border-radius: 50%;
+    content: "";
+    display: inline-block;
+    height: 0.4rem;
+    margin-right: 0.35rem;
+    width: 0.4rem;
+}
+#classgroup-demo .local-classgroup-status.is-hidden{
+    background: #fff2df;
+    color: #986018;
+}
+#classgroup-demo .local-classgroup-status.is-hidden::before{
+    background: #d28a2b;
+}
+#classgroup-demo .local-classgroup-course-title{
+    font-size: 1.15rem;
+    line-height: 1.4;
+    margin: 1.15rem 0 1.4rem;
+}
+#classgroup-demo .local-classgroup-course-title a{
+    color: #1c2e4b;
+    text-decoration: none;
+}
+#classgroup-demo .local-classgroup-course-title a::after{
+    content: "";
+    inset: 0;
+    position: absolute;
+}
+#classgroup-demo .local-classgroup-course-card{
+    position: relative;
+}
+#classgroup-demo .local-classgroup-course-dates{
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr;
+    margin-top: auto;
+}
+#classgroup-demo .local-classgroup-course-category{
+    background: #f3f6fa;
+    border-radius: 0.7rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem 0.8rem;
+}
+#classgroup-demo .local-classgroup-course-category span,
+#classgroup-demo .local-classgroup-course-category strong{
+    display: block;
+}
+#classgroup-demo .local-classgroup-course-category span{
+    color: #8792a3;
+    font-size: 0.7rem;
+    margin-bottom: 0.2rem;
+}
+#classgroup-demo .local-classgroup-course-category strong{
+    color: #46546a;
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+#classgroup-demo .local-classgroup-course-date{
+    border-left: 2px solid #dbe6f4;
+    padding-left: 0.65rem;
+}
+#classgroup-demo .local-classgroup-course-date span,
+#classgroup-demo .local-classgroup-course-date strong{
+    display: block;
+}
+#classgroup-demo .local-classgroup-course-date span{
+    color: #8792a3;
+    font-size: 0.72rem;
+    margin-bottom: 0.25rem;
+}
+#classgroup-demo .local-classgroup-course-date strong{
+    color: #46546a;
+    font-size: 0.8rem;
+    font-weight: 650;
+}
+#classgroup-demo .local-classgroup-course-footer{
+    border-top: 1px solid #edf0f4;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 1;
+}
+#classgroup-demo .local-classgroup-enter-link{
+    color: #2863b2;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+#classgroup-demo .local-classgroup-enter-link::after{
+    content: " →";
+}
+#classgroup-demo .local-classgroup-empty-state{
+    align-items: center;
+    background: #f8fafc;
+    border: 1px dashed #cfd8e5;
+    border-radius: 1rem;
+    color: #718096;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 18rem;
+    padding: 2rem;
+    text-align: center;
+}
+#classgroup-demo .local-classgroup-empty-state h3{
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+#classgroup-demo .local-classgroup-empty-icon{
+    border: 2px solid #9db0c7;
+    border-radius: 0.4rem;
+    height: 2.75rem;
+    margin-bottom: 1rem;
+    opacity: 0.75;
+    transform: rotate(-4deg);
+    width: 3.4rem;
+}
+
+@media (max-width: 767.98px){
+#classgroup-demo .local-classgroup-myhero{
+        align-items: start;
+        border-radius: 0 0 1.25rem 1.25rem;
+        flex-direction: column;
+        gap: 1.75rem;
+        margin-bottom: 1.25rem;
+        min-height: auto;
+    }
+#classgroup-demo .local-classgroup-hero-stats{
+        width: 100%;
+    }
+#classgroup-demo .local-classgroup-hero-stat{
+        flex: 1;
+        min-width: 0;
+    }
+#classgroup-demo .local-classgroup-master-detail{
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+#classgroup-demo .local-classgroup-class-list{
+        max-height: 15rem;
+        position: static;
+    }
+#classgroup-demo .local-classgroup-course-header{
+        flex-direction: column;
+    }
+#classgroup-demo .local-classgroup-class-actions,
+#classgroup-demo .local-classgroup-class-actions .btn{
+        width: 100%;
+    }
+
+}
+#classgroup-demo .local-classgroup-classes-table th:nth-child(2),
+#classgroup-demo .local-classgroup-classes-table td:nth-child(2){
+    width: 24%;
+}
+#classgroup-demo .local-classgroup-classes-table th:nth-child(1),
+#classgroup-demo .local-classgroup-classes-table td:nth-child(1),
+#classgroup-demo .local-classgroup-classes-table th:nth-child(5),
+#classgroup-demo .local-classgroup-classes-table td:nth-child(5){
+    width: 10%;
+}
+#classgroup-demo .local-classgroup-offerings-form{
+    max-width: 100%;
+    overflow-x: auto;
+    width: 100%;
+}
+#classgroup-demo .local-classgroup-sortable{
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-collapse: separate;
+    border-radius: 0.75rem;
+    border-spacing: 0;
+    box-shadow: 0 0.125rem 0.5rem rgba(15, 35, 55, 0.06);
+    min-width: 56rem;
+    overflow: hidden;
+    width: 100%;
+}
+#classgroup-demo .local-classgroup-sortable thead th{
+    background: var(--bs-tertiary-bg, #f6f8fa);
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+    color: var(--bs-emphasis-color, #1f2937);
+    font-size: 0.875rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+}
+#classgroup-demo .local-classgroup-sortable tbody td{
+    background: var(--bs-body-bg, #fff);
+    border-bottom: 1px solid var(--bs-border-color, #e9ecef);
+    padding: 0.8rem 1rem;
+    transition: background-color 160ms ease;
+    vertical-align: middle;
+}
+#classgroup-demo .local-classgroup-sortable tbody tr:last-child td{
+    border-bottom: 0;
+}
+#classgroup-demo .local-classgroup-sortable tbody tr:hover td{
+    background: rgba(13, 110, 253, 0.055);
+}
+#classgroup-demo .local-classgroup-sortable .drag-column{
+    text-align: center;
+    width: 4.5rem;
+}
+#classgroup-demo .local-classgroup-sortable .code-column{
+    white-space: nowrap;
+    width: 9rem;
+}
+#classgroup-demo .local-classgroup-sortable .name-column{
+    width: 42%;
+}
+#classgroup-demo .local-classgroup-sortable .hours-column{
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    width: 12rem;
+}
+#classgroup-demo .local-classgroup-sortable .hours-column .form-control{
+    margin-left: auto;
+    text-align: right;
+}
+#classgroup-demo .local-classgroup-sortable .instructor-column{
+    width: 17rem;
+}
+#classgroup-demo .local-classgroup-save-status{
+    min-height: 1.25rem;
+}
+#classgroup-demo .local-classgroup-draghandle.btn.btn-icon{
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    color: var(--bs-secondary-color, #64748b);
+    cursor: grab;
+    height: 2.25rem;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+    width: 2.25rem;
+}
+#classgroup-demo .local-classgroup-draghandle.btn.btn-icon:hover,
+#classgroup-demo .local-classgroup-draghandle.btn.btn-icon:focus-visible{
+    background: rgba(13, 110, 253, 0.1);
+    border-color: rgba(13, 110, 253, 0.25);
+    color: var(--bs-primary, #0d6efd);
+    outline: 2px solid transparent;
+    transform: scale(1.06);
+}
+#classgroup-demo .local-classgroup-draghandle.btn.btn-icon:active,
+#classgroup-demo .sortable-list-is-dragged .local-classgroup-draghandle{
+    cursor: grabbing;
+}
+#classgroup-demo .local-classgroup-sortable tbody tr.sortable-list-is-dragged td,
+#classgroup-demo .local-classgroup-sortable tbody tr.is-dragging td{
+    background: var(--bs-body-bg, #fff);
+    box-shadow: 0 0.75rem 1.75rem rgba(15, 35, 55, 0.2);
+    opacity: 0.82;
+}
+#classgroup-demo .local-classgroup-sortable tbody tr.sortable-list-over-element td,
+#classgroup-demo .local-classgroup-sortable tbody tr.sortable-list-current-position td{
+    border-top: 3px solid var(--bs-primary, #0d6efd);
+}
+
+@media (max-width: 767.98px){
+#classgroup-demo .local-classgroup-offerings-form{
+        border-radius: 0.75rem;
+        -webkit-overflow-scrolling: touch;
+    }
+#classgroup-demo .local-classgroup-sortable thead th,
+#classgroup-demo .local-classgroup-sortable tbody td{
+        padding: 0.7rem 0.75rem;
+    }
+
+}
+
+@media (prefers-color-scheme: dark){
+#classgroup-demo .local-classgroup-sortable{
+        box-shadow: 0 0.125rem 0.6rem rgba(0, 0, 0, 0.28);
+    }
+#classgroup-demo .local-classgroup-sortable tbody tr:hover td{
+        background: rgba(77, 163, 255, 0.1);
+    }
+
+}
+
+
