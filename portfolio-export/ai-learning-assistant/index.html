@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Adapted from local_classgroup/aihelper.php; see NOTICE.md and COPYING.txt. -->
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI 小幫手互動展示，使用預設模擬回覆，不連接即時 AI。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>AI小幫手｜互動展示</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./aihelper.js"></script>
+</head>
+<body>
+  <main class="local-classgroup-aihelper" data-region="aihelper">
+    <div class="local-classgroup-aihero">
+      <div class="local-classgroup-aiicon">
+        <svg viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path d="M12 3l1.35 4.15a5.5 5.5 0 003.5 3.5L21 12l-4.15 1.35a5.5 5.5 0 00-3.5 3.5L12 21l-1.35-4.15a5.5 5.5 0 00-3.5-3.5L3 12l4.15-1.35a5.5 5.5 0 003.5-3.5L12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="local-classgroup-aititle">AI小幫手</h2>
+      <p class="local-classgroup-aisubtitle">有課程上的問題嗎？把問題告訴我，我會協助你整理方向。</p>
+      <p class="local-classgroup-demo-notice">互動展示：回覆為預設模擬內容，未連接即時 AI</p>
+    </div>
+    <div class="local-classgroup-aipanel">
+      <div class="local-classgroup-aimessages" data-region="messages" aria-live="polite" aria-label="對話內容"></div>
+      <label for="local-classgroup-aiinput" class="local-classgroup-ailabel">想問 AI 小幫手什麼？</label>
+      <div class="local-classgroup-aicomposer">
+        <textarea id="local-classgroup-aiinput" class="form-control local-classgroup-aiinput" data-region="input" rows="4" maxlength="2000" placeholder="例如：請幫我整理這週的學習重點…" aria-describedby="aihelper-hint"></textarea>
+        <button type="button" class="local-classgroup-aisend" data-action="send" disabled><span aria-hidden="true">↑</span><span class="sr-only">送出訊息</span></button>
+      </div>
+      <div class="local-classgroup-aihint" id="aihelper-hint">按 Enter 送出，Shift + Enter 換行</div>
+      <a href="https://www.youtube.com/results?search_query=Moodle%20learning%20tutorial" class="btn btn-outline-secondary local-classgroup-aivideo" data-action="search-video" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><span aria-hidden="true">▶️</span> 搜尋相關教學影片</a>
+      <p class="local-classgroup-demo-external">影片搜尋會開啟 YouTube 外部網站，並將輸入框或上一則問題作為搜尋文字。</p>
+      <noscript>請啟用 JavaScript，以操作本機模擬對話。</noscript>
+    </div>
+  </main>
+</body>
+</html>

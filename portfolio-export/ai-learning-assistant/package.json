@@ -1,0 +1,7 @@
+{
+  "name": "ai-learning-assistant-portfolio-demo",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-or-later",
+  "scripts": {"test": "node tests/interaction.test.mjs"}
+}
