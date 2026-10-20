@@ -1,0 +1,2 @@
+/* Only standalone page uses this reset; omit when embedding. */
+body{margin:0}

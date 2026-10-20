@@ -1,0 +1,103 @@
+#utilization-demo{font-family:Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#21372f;background:#f5f7f4;font-synthesis:none;--accent:#23714e;--muted:#6b7a72;--line:#e2e8e2}
+#utilization-demo *{box-sizing:border-box}
+#utilization-demo{margin:0}
+#utilization-demo .topbar{height:76px;padding:0 5vw;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+#utilization-demo .brand{display:flex;align-items:center;gap:13px;font-weight:700}
+#utilization-demo .brand-icon{background:#e8f0e9;color:var(--accent);padding:6px 10px;font-size:25px;border-radius:10px}
+#utilization-demo .brand-divider{color:#b8c1ba;font-weight:400}
+#utilization-demo .brand-sub{font-size:14px;font-weight:400;color:var(--muted)}
+#utilization-demo .building-badge{font-size:12px;background:#edf3eb;color:#436443;border:1px solid #dce7d9;padding:8px 12px;border-radius:20px}
+#utilization-demo main{max-width:1280px;margin:auto;padding:48px 32px 20px}
+#utilization-demo .heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px}
+#utilization-demo .eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:var(--accent);margin:0 0 12px}
+#utilization-demo h1{font-size:clamp(25px,3vw,36px);letter-spacing:-1px;margin:0 0 12px}
+#utilization-demo h2{font-size:17px;margin:0 0 18px}
+#utilization-demo .intro{color:var(--muted);font-size:14px;margin:0}
+#utilization-demo .timezone{font-size:12px;color:var(--muted);white-space:nowrap;padding-bottom:3px}
+#utilization-demo .panel{background:white;border:1px solid var(--line);border-radius:16px;padding:26px}
+#utilization-demo .query-panel form{display:flex;align-items:flex-end;gap:18px}
+#utilization-demo .field{flex:1;max-width:320px}
+#utilization-demo label{display:block;font-size:13px;font-weight:600;margin-bottom:9px}
+#utilization-demo input{font:inherit;width:100%;min-height:47px;border:1px solid #ced9cf;border-radius:8px;background:#fff;padding:10px 12px;color:#21372f}
+#utilization-demo .date-arrow{padding-bottom:15px;color:#819086}
+#utilization-demo button{font:inherit;min-height:47px;border:0;border-radius:8px;padding:11px 23px;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;gap:20px}
+#utilization-demo button:hover{background:#185c3d}
+#utilization-demo button:disabled{opacity:.65;cursor:wait}
+#utilization-demo button:focus-visible,#utilization-demo input:focus-visible,#utilization-demo summary:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+#utilization-demo .rule{font-size:12px;color:var(--muted);margin:19px 0 0;line-height:1.7}
+#utilization-demo .status{font-size:14px;color:var(--muted);padding:28px 0;line-height:1.7}
+#utilization-demo .status.error{color:#a32929;background:#fff0ed;border:1px solid #f3d1ca;border-radius:10px;padding:16px;margin:24px 0}
+#utilization-demo .status.success{color:var(--accent)}
+#utilization-demo .result-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 17px}
+#utilization-demo .result-heading h2,#utilization-demo .result-heading p{margin:0}
+#utilization-demo .result-heading p{font-size:12px;color:var(--muted)}
+#utilization-demo .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+#utilization-demo .metric{padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:13px}
+#utilization-demo .metric>span{font-size:13px;color:var(--muted)}
+#utilization-demo .metric strong{font-size:31px;font-weight:650;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+#utilization-demo .metric small{font-size:11px;color:var(--muted);line-height:1.6}
+#utilization-demo .metric.featured{background:#eaf2e7;border-color:#d3e0cb}
+#utilization-demo .metric.featured strong{color:var(--accent)}
+#utilization-demo .detail-grid{display:grid;grid-template-columns:1.8fr 1fr;gap:24px;margin-bottom:24px}
+#utilization-demo .muted{font-size:12px;color:var(--muted);line-height:1.8}
+#utilization-demo .comparison h2{margin-bottom:4px}
+#utilization-demo .comparison>.muted{margin:0 0 22px}
+#utilization-demo #bars{max-height:380px;overflow:auto;padding-right:6px}
+#utilization-demo .bar-row{display:grid;grid-template-columns:minmax(80px,130px) 1fr 60px;gap:14px;align-items:center;margin-bottom:18px;font-size:12px}
+#utilization-demo .bar-name{overflow-wrap:anywhere}
+#utilization-demo .bar-track{background:#edf1ec;height:12px;border-radius:4px;overflow:hidden}
+#utilization-demo .bar-fill{background:#5e9772;height:100%;border-radius:4px}
+#utilization-demo .bar-value{text-align:right;font-variant-numeric:tabular-nums}
+#utilization-demo .calculation dl{margin:0}
+#utilization-demo .calculation dl>div{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}
+#utilization-demo .calculation dt{color:var(--muted)}
+#utilization-demo .calculation dd{margin:0;font-weight:600}
+#utilization-demo .calculation>.muted{margin:18px 0}
+#utilization-demo details{font-size:12px;line-height:1.8}
+#utilization-demo summary{cursor:pointer;color:var(--accent)}
+#utilization-demo #holidays{padding-left:20px;max-height:160px;overflow:auto}
+#utilization-demo .table-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+#utilization-demo .table-heading h2{margin:0}
+#utilization-demo .table-scroll{overflow-x:auto}
+#utilization-demo table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+#utilization-demo th{font-weight:500;color:var(--muted);background:#f7f9f6}
+#utilization-demo th,#utilization-demo td{padding:16px 15px;border-bottom:1px solid var(--line);text-align:right}
+#utilization-demo th:first-child,#utilization-demo td:first-child{text-align:left}
+#utilization-demo td{font-variant-numeric:tabular-nums}
+#utilization-demo td:last-child{font-weight:600;color:var(--accent)}
+#utilization-demo .empty{text-align:center;color:var(--muted);padding:28px;font-size:14px}
+#utilization-demo footer{color:#88958b;text-align:center;font-size:11px;padding:30px 0;line-height:1.8}
+#utilization-demo [hidden]{display:none!important}
+@media(max-width:850px){#utilization-demo .metrics{grid-template-columns:repeat(2,1fr)}
+#utilization-demo .detail-grid{grid-template-columns:1fr}
+#utilization-demo .heading{align-items:flex-start;gap:20px}
+#utilization-demo .timezone{display:none}
+#utilization-demo .field{max-width:none}
+#utilization-demo .query-panel form{flex-wrap:wrap}
+#utilization-demo .query-panel button{width:100%;justify-content:center}
+#utilization-demo .result-heading{gap:15px;align-items:flex-start}
+#utilization-demo .result-heading p{text-align:right}
+}
+@media(max-width:520px){#utilization-demo main{padding:30px 16px 15px}
+#utilization-demo .topbar{height:65px;padding:0 16px}
+#utilization-demo .brand{gap:8px;font-size:14px}
+#utilization-demo .brand-sub,#utilization-demo .brand-divider{display:none}
+#utilization-demo .building-badge{font-size:11px}
+#utilization-demo .panel{padding:20px}
+#utilization-demo .query-panel form{gap:12px}
+#utilization-demo .date-arrow{display:none}
+#utilization-demo .field{flex-basis:100%}
+#utilization-demo .metric{padding:18px}
+#utilization-demo .metric strong{font-size:27px}
+#utilization-demo .metric small{font-size:10px}
+#utilization-demo .metrics{gap:12px}
+#utilization-demo .bar-row{grid-template-columns:95px 1fr 55px;gap:10px}
+#utilization-demo .result-heading{flex-direction:column;gap:8px}
+#utilization-demo .result-heading p{text-align:left}
+}
+#utilization-demo .view-nav{display:flex;gap:8px;margin-bottom:32px;border-bottom:1px solid var(--line);padding-bottom:14px}
+#utilization-demo .view-nav button{background:transparent;color:var(--muted);font-size:14px;gap:0}
+#utilization-demo .view-nav button[aria-pressed="true"]{background:#e8f0e9;color:var(--accent);font-weight:700}
+#utilization-demo .view-nav button:hover{background:#edf3eb}
+@media(max-width:520px){#utilization-demo .view-nav button{padding:10px 15px}
+}
