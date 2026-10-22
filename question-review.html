@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f3ec">
+  <meta name="description" content="題庫整理與重複檢查工具作品介紹：PDF 題庫轉換、文字相似度比對與實作流程。">
+  <title>題庫整理與重複檢查工具｜我的作品集</title>
+  <link rel="stylesheet" href="project-detail.css">
+</head>
+<body id="top">
+  <header class="container header-inner">
+    <a class="site-name" href="index.html">我的作品集</a>
+    <nav class="site-nav" aria-label="主要導覽"><a href="index.html">首頁</a><a href="index.html#about">關於我</a><a href="projects.html" aria-current="location">代表專案</a></nav>
+  </header>
+  <main class="container">
+    <a class="back-link" href="projects.html">← 返回代表專案</a>
+    <section class="project-hero" aria-labelledby="project-title">
+      <p class="eyebrow">03 / PROJECT · 資料處理工具</p>
+      <h1 id="project-title">題庫整理與重複檢查工具</h1>
+      <p class="lead">將 PDF 題庫轉換為結構化 CSV，透過完全重複與文字相似度比對，協助整理題目並找出需要人工複核的內容。</p>
+    </section>
+    <dl class="project-meta">
+      <div><dt>專案類型</dt><dd>題庫資料整理與檢查</dd></div>
+      <div><dt>操作方式</dt><dd>命令列工具<small>輸入 PDF 或 CSV，輸出題庫檔案與終端機比對報告。</small></dd></div>
+      <div class="meta-stack"><dt>使用技術</dt><dd><ol class="meta-list">
+        <li>pypdf：擷取 PDF 文字</li>
+        <li>pandas：讀取與清理 CSV 資料</li>
+        <li>jieba：中文斷詞</li>
+        <li>scikit-learn：TF-IDF 向量化與餘弦相似度</li>
+        <li>hashlib：MD5 完全重複比對</li>
+      </ol></dd></div>
+      <div class="meta-stack"><dt>使用語言與格式</dt><dd><ol class="meta-list">
+        <li>Python：資料解析與比對流程</li>
+        <li>正規表示式：題目欄位擷取</li>
+        <li>CSV：結構化題庫與交換格式</li>
+      </ol></dd></div>
+    </dl>
+    <nav class="section-nav" aria-label="作品介紹章節"><a href="#overview">01 專案概況</a><a href="#features">02 功能與流程</a><a href="#timeline">03 實作流程</a><a href="#reflection">04 成果</a></nav>
+    <section class="detail-section" id="overview" aria-labelledby="overview-title">
+      <header><p class="eyebrow">01 / OVERVIEW</p><h2 id="overview-title">專案概況</h2></header>
+      <div class="section-content"><dl class="summary-list">
+        <div><dt>背景與問題</dt><dd>PDF 題庫中的題幹、選項、答案與分類分散在文字段落中，逐題整理及人工檢查重複內容需要反覆查找。當題目數量增加，也容易遺漏僅有部分文字差異的相似題目。</dd></div>
+        <div><dt>使用對象與目標</dt><dd>協助題庫整理與審查人員，先將符合指定格式的文字型 PDF 轉成 CSV，再找出完全重複與高度相似的題目，縮小人工複核範圍。</dd></div>
+        <div><dt>實作內容</dt><dd>以兩支 Python 程式串接資料整理與檢查流程：pdf_to_csv.py 負責擷取 PDF 文字並解析題目欄位；find_duplicates.py 負責清理題幹、計算 MD5 與 TF-IDF 餘弦相似度，並在終端機列出比對結果。</dd></div>
+      </dl></div>
+    </section>
+    <section class="detail-section" id="features" aria-labelledby="features-title">
+      <header><p class="eyebrow">02 / FEATURES</p><h2 id="features-title">功能與流程</h2></header>
+      <div class="section-content">
+        <article class="feature">
+          <h3>核心功能一｜PDF 題庫轉換</h3>
+          <p>使用 pypdf 擷取文字，以評鑑主題標記切分題目，透過正規表示式整理分類、評鑑內容、題幹、四個選項、答案與難易度。輸出採 UTF-8 BOM 編碼的 CSV，方便接續整理與比對。</p>
+          <dl class="summary-list feature-notes">
+            <div><dt>操作方式</dt><dd><code>python pdf_to_csv.py input.pdf questions.csv</code></dd></div>
+            <div><dt>適用範圍</dt><dd>目前依固定欄位標記解析文字型 PDF；掃描影像與不同排版的題庫需另行處理，轉換後仍需檢查欄位是否完整。</dd></div>
+          </dl>
+        </article>
+        <article class="feature">
+          <h3>核心功能二｜完全重複題目檢查</h3>
+          <p>讀取 CSV 的 question 欄位，排除缺值並清理題幹。比對前移除空白、統一英文大小寫，再計算 MD5，找出正規化後內容相同的題目。</p>
+          <dl class="summary-list feature-notes">
+            <div><dt>設計考量</dt><dd>先用明確的文字規則找出完全重複，再將文字相近的題目交由相似度流程檢查；目前比對依據為題幹，不包含選項與答案。</dd></div>
+          </dl>
+        </article>
+        <article class="feature">
+          <h3>核心功能三｜文字相似度比對</h3>
+          <p>透過 jieba 中文斷詞與 TF-IDF 建立題幹向量，計算兩兩題目的餘弦相似度。預設列出相似度達 85% 且非完全相同的題目配對，顯示題幹與分數供人工複核。</p>
+          <dl class="summary-list feature-notes">
+            <div><dt>操作方式</dt><dd><code>python find_duplicates.py questions.csv</code></dd></div>
+            <div><dt>結果解讀</dt><dd>分數反映詞彙與文字組成的相近程度，仍需人工判斷題意、答案及保留方式。程式只列出報告，不會自動刪除題目。</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+    <section class="detail-section" id="timeline" aria-labelledby="timeline-title">
+      <header><p class="eyebrow">03 / WORKFLOW</p><h2 id="timeline-title">實作流程</h2></header>
+      <div class="section-content"><ol class="timeline">
+        <li><h3>整理格式</h3><span>確認 PDF 題目標記，定義題幹、選項、答案與分類等 CSV 欄位。</span></li>
+        <li><h3>解析資料</h3><span>擷取 PDF 文字，切分題目並輸出結構化題庫。</span></li>
+        <li><h3>分層比對</h3><span>先以 MD5 檢查完全重複，再透過 TF-IDF 與餘弦相似度篩選相似題目。</span></li>
+        <li><h3>人工複核</h3><span>依報告檢視題幹、選項與答案，確認是否為重複題或需要保留的變化題。</span></li>
+      </ol></div>
+    </section>
+    <section class="detail-section" id="reflection" aria-labelledby="reflection-title">
+      <header><p class="eyebrow">04 / RESULT</p><h2 id="reflection-title">成果</h2></header>
+      <div class="section-content"><dl class="summary-list">
+        <div><dt>完成成果</dt><dd>建立從 PDF 轉換、CSV 清理到重複題目檢查的命令列處理流程，將完全重複與高度相似的題目分別列出，提供題庫整理與人工審查的依據。</dd></div>
+        <div><dt>後續方向</dt><dd>可延伸支援更多 PDF 格式、選項與答案比對，以及報告檔案匯出。大量題庫的兩兩相似度計算，也可進一步評估分批處理方式。</dd></div>
+      </dl></div>
+    </section>
+    <nav class="project-pagination" aria-label="其他作品"><a href="projects.html">← 全部專案</a><a href="class-management.html">班級管理系統 →</a></nav>
+  </main>
+  <footer class="container"><span>我的作品集 · 持續探索，持續累積。</span><a href="#top">回到頂端 ↑</a></footer>
+</body>
+</html>
