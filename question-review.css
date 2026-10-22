@@ -1,0 +1,25 @@
+.similarity-report { overflow-wrap: anywhere; }
+.report-header { padding: 24px; background: #eee9e1; border: 1px solid var(--line); border-radius: 6px 6px 0 0; }
+.report-header h4 { margin: 12px 0; font-family: var(--serif); font-size: 24px; font-weight: 500; line-height: 1.6; }
+.report-header p:last-child { font-size: 14px; }
+.similarity-pairs { list-style: none; margin: 0; padding: 0; border-inline: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0 0 6px 6px; }
+.similarity-pair { padding: 24px; }
+.similarity-pair + .similarity-pair { border-top: 1px solid var(--line); }
+.pair-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 20px; }
+.pair-heading h5 { margin: 0; color: var(--muted); font-size: 14px; font-weight: 500; }
+.similarity-score { color: var(--accent); font-size: 13px; white-space: nowrap; }
+.similarity-score strong { margin-left: 6px; font-family: Georgia, serif; font-size: 28px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.score-track { height: 3px; margin: 12px 0 24px; background: var(--line); }
+.score-track span { display: block; height: 100%; background: var(--accent); }
+.question-pair { display: grid; gap: 16px; margin: 0; }
+.question-pair > div { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 12px; }
+.question-pair dt { padding-top: 2px; color: var(--accent); font-size: 13px; }
+.question-pair dd { margin: 0; line-height: 1.95; }
+.question-pair mark { padding-block: 2px; color: var(--ink); background: #eed9c9; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.similarity-pair .review-note { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 14px; }
+.review-note strong { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 500; }
+@media (max-width: 720px) {
+  .report-header, .similarity-pair { padding: 20px 16px; }
+  .report-header h4 { font-size: 21px; }
+  .question-pair > div { grid-template-columns: 1fr; gap: 4px; }
+}

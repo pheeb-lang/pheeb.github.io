@@ -7,6 +7,7 @@
   <meta name="description" content="題庫整理與重複檢查工具作品介紹：PDF 題庫轉換、文字相似度比對與實作流程。">
   <title>題庫整理與重複檢查工具｜我的作品集</title>
   <link rel="stylesheet" href="project-detail.css">
+  <link rel="stylesheet" href="question-review.css">
 </head>
 <body id="top">
   <header class="container header-inner">
@@ -66,6 +67,43 @@
         <article class="feature">
           <h3>核心功能三｜文字相似度比對</h3>
           <p>透過 jieba 中文斷詞與 TF-IDF 建立題幹向量，計算兩兩題目的餘弦相似度。預設列出相似度達 85% 且非完全相同的題目配對，顯示題幹與分數供人工複核。</p>
+          <figure class="similarity-report" id="analysis-results" aria-labelledby="report-title" aria-describedby="report-caption">
+            <header class="report-header">
+              <p class="eyebrow">ANALYSIS REPORT · 分析結果展示</p>
+              <h4 id="report-title">找出相近題目，逐組檢視差異。</h4>
+              <p>展示 3 組配對 · 原始篩選門檻 ≥ 85%</p>
+            </header>
+            <ol class="similarity-pairs">
+              <li class="similarity-pair">
+                <div class="pair-heading"><h5>01 / 平台名稱差異</h5><span class="similarity-score">相似度 <strong>86.76%</strong></span></div>
+                <div class="score-track" aria-hidden="true"><span style="width: 86.76%"></span></div>
+                <dl class="question-pair">
+                  <div><dt>題目 A</dt><dd>下列何者是<mark>晨星學院</mark>推出的線上學習平台名稱？</dd></div>
+                  <div><dt>題目 B</dt><dd>下列何者是<mark>青禾學院</mark>推出的線上學習平台名稱？</dd></div>
+                </dl>
+                <p class="review-note"><strong>複核重點</strong>句型相同，但詢問的機構不同，需確認對應答案後再判斷是否保留。</p>
+              </li>
+              <li class="similarity-pair">
+                <div class="pair-heading"><h5>02 / 應用情境差異</h5><span class="similarity-score">相似度 <strong>89.49%</strong></span></div>
+                <div class="score-track" aria-hidden="true"><span style="width: 89.49%"></span></div>
+                <dl class="question-pair">
+                  <div><dt>題目 A</dt><dd>現有工具包含文字編輯、表格計算、簡報製作與圖像繪製。若要<mark>彙整每月支出並計算總額</mark>，應優先選用哪一種工具？</dd></div>
+                  <div><dt>題目 B</dt><dd>現有工具包含文字編輯、表格計算、簡報製作與圖像繪製。若要<mark>向同學展示活動企劃與流程</mark>，應優先選用哪一種工具？</dd></div>
+                </dl>
+                <p class="review-note"><strong>複核重點</strong>共用的工具清單提高文字相似程度，但任務與考查重點不同。</p>
+              </li>
+              <li class="similarity-pair">
+                <div class="pair-heading"><h5>03 / 作業階段差異</h5><span class="similarity-score">相似度 <strong>91.11%</strong></span></div>
+                <div class="score-track" aria-hidden="true"><span style="width: 91.11%"></span></div>
+                <dl class="question-pair">
+                  <div><dt>題目 A</dt><dd>依據星河圖書館的借閱作業規則，當讀者<mark>申請延長借閱期限</mark>時，館員應先確認下列哪一項資訊？</dd></div>
+                  <div><dt>題目 B</dt><dd>依據星河圖書館的借閱作業規則，當讀者<mark>辦理預約書籍取件</mark>時，館員應先確認下列哪一項資訊？</dd></div>
+                </dl>
+                <p class="review-note"><strong>複核重點</strong>題幹前後段高度一致，仍須比較作業階段與所需資訊，不能僅依分數判定重複。</p>
+              </li>
+            </ol>
+            <figcaption id="report-caption">題目、機構名稱與配對編號皆為替換後的虛構示例，重點差異以底色標示。86.76%、89.49% 與 91.11% 沿用原始分析結果，未對替換後的題目重新計算，僅用於展示報告格式。</figcaption>
+          </figure>
           <dl class="summary-list feature-notes">
             <div><dt>操作方式</dt><dd><code>python find_duplicates.py questions.csv</code></dd></div>
             <div><dt>結果解讀</dt><dd>分數反映詞彙與文字組成的相近程度，仍需人工判斷題意、答案及保留方式。程式只列出報告，不會自動刪除題目。</dd></div>
