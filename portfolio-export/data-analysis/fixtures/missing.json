@@ -1,0 +1,125 @@
+{
+  "id": "missing",
+  "label": "缺失值",
+  "analysis_error": null,
+  "save_error": false,
+  "result": {
+    "summary": {
+      "row_count": 4,
+      "column_count": 3,
+      "missing_values": {
+        "類別": 1,
+        "狀態": 1,
+        "件數": 1
+      }
+    },
+    "statistics": {
+      "categorical_counts": [
+        {
+          "column": "類別",
+          "counts": {
+            "文件": 2,
+            "報表": 1
+          }
+        },
+        {
+          "column": "狀態",
+          "counts": {
+            "完成": 2,
+            "待處理": 1
+          }
+        }
+      ],
+      "numeric": {
+        "column": "件數",
+        "count": 3,
+        "sum": 24,
+        "mean": 8
+      }
+    },
+    "charts": {
+      "bar": [
+        {
+          "column": "類別",
+          "title": "類別次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 2
+            },
+            {
+              "label": "報表",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "column": "狀態",
+          "title": "狀態次數分布",
+          "data": [
+            {
+              "label": "完成",
+              "value": 2
+            },
+            {
+              "label": "待處理",
+              "value": 1
+            }
+          ]
+        }
+      ],
+      "pie": [
+        {
+          "column": "類別",
+          "title": "類別次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 2
+            },
+            {
+              "label": "報表",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "column": "狀態",
+          "title": "狀態次數分布",
+          "data": [
+            {
+              "label": "完成",
+              "value": 2
+            },
+            {
+              "label": "待處理",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "preview_data": [
+      {
+        "類別": "文件",
+        "狀態": "完成",
+        "件數": 12
+      },
+      {
+        "類別": "報表",
+        "狀態": null,
+        "件數": 8
+      },
+      {
+        "類別": null,
+        "狀態": "待處理",
+        "件數": null
+      },
+      {
+        "類別": "文件",
+        "狀態": "完成",
+        "件數": 4
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "empty",
+  "label": "無圖表資料",
+  "analysis_error": null,
+  "save_error": false,
+  "result": {
+    "summary": {
+      "row_count": 2,
+      "column_count": 2,
+      "missing_values": {
+        "識別碼": 0,
+        "數值": 0
+      }
+    },
+    "statistics": {
+      "categorical_counts": []
+    },
+    "charts": {
+      "bar": [],
+      "pie": []
+    },
+    "preview_data": [
+      {
+        "識別碼": "DEMO-01",
+        "數值": 10
+      },
+      {
+        "識別碼": "DEMO-02",
+        "數值": 20
+      }
+    ]
+  }
+}

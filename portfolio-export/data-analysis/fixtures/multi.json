@@ -1,0 +1,143 @@
+{
+  "id": "multi",
+  "label": "多分類資料",
+  "analysis_error": null,
+  "save_error": false,
+  "result": {
+    "summary": {
+      "row_count": 4,
+      "column_count": 3,
+      "missing_values": {
+        "文件類型": 0,
+        "處理狀態": 0,
+        "件數": 0
+      }
+    },
+    "statistics": {
+      "categorical_counts": [
+        {
+          "column": "文件類型",
+          "counts": {
+            "文件": 2,
+            "報表": 1,
+            "手冊": 1
+          }
+        },
+        {
+          "column": "處理狀態",
+          "counts": {
+            "待處理": 1,
+            "文件": 1,
+            "已完成": 2
+          }
+        }
+      ],
+      "numeric": {
+        "column": "件數",
+        "count": 4,
+        "sum": 30,
+        "mean": 7.5
+      }
+    },
+    "charts": {
+      "bar": [
+        {
+          "column": "文件類型",
+          "title": "文件類型次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 2
+            },
+            {
+              "label": "報表",
+              "value": 1
+            },
+            {
+              "label": "手冊",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "column": "處理狀態",
+          "title": "處理狀態次數分布",
+          "data": [
+            {
+              "label": "待處理",
+              "value": 1
+            },
+            {
+              "label": "文件",
+              "value": 1
+            },
+            {
+              "label": "已完成",
+              "value": 2
+            }
+          ]
+        }
+      ],
+      "pie": [
+        {
+          "column": "文件類型",
+          "title": "文件類型次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 2
+            },
+            {
+              "label": "報表",
+              "value": 1
+            },
+            {
+              "label": "手冊",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "column": "處理狀態",
+          "title": "處理狀態次數分布",
+          "data": [
+            {
+              "label": "待處理",
+              "value": 1
+            },
+            {
+              "label": "文件",
+              "value": 1
+            },
+            {
+              "label": "已完成",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    "preview_data": [
+      {
+        "文件類型": "文件",
+        "處理狀態": "待處理",
+        "件數": 12
+      },
+      {
+        "文件類型": "報表",
+        "處理狀態": "文件",
+        "件數": 8
+      },
+      {
+        "文件類型": "文件",
+        "處理狀態": "已完成",
+        "件數": 4
+      },
+      {
+        "文件類型": "手冊",
+        "處理狀態": "已完成",
+        "件數": 6
+      }
+    ]
+  }
+}

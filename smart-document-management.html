@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f3ec">
+  <meta name="description" content="智慧文件管理系統作品介紹：文件知識庫、RAG 智慧問答與資料分析圖表互動展示。">
+  <title>智慧文件管理系統｜我的作品集</title>
+  <link rel="stylesheet" href="project-detail.css">
+</head>
+<body id="top">
+  <header class="container header-inner">
+    <a class="site-name" href="index.html">我的作品集</a>
+    <nav class="site-nav" aria-label="主要導覽"><a href="index.html">首頁</a><a href="index.html#about">關於我</a><a href="projects.html" aria-current="location">近期專案</a></nav>
+  </header>
+  <main class="container">
+    <a class="back-link" href="projects.html">← 返回近期專案</a>
+    <section class="project-hero" aria-labelledby="project-title">
+      <p class="eyebrow">04 / PROJECT · 智慧文件管理</p>
+      <h1 id="project-title">智慧文件管理系統</h1>
+      <p class="lead">整合文件查找、標籤管理與 RAG 問答，讓使用者從文件知識庫中快速找到所需資訊與參考來源。</p>
+    </section>
+    <nav class="section-nav" aria-label="作品介紹章節"><a href="#overview">01 專案概況</a><a href="#features">02 功能與畫面</a></nav>
+    <section class="detail-section" id="overview" aria-labelledby="overview-title">
+      <header><p class="eyebrow">01 / OVERVIEW</p><h2 id="overview-title">專案概況</h2></header>
+      <div class="section-content"><p>以集中式文件知識庫整理文件，提供資料夾、關鍵字、狀態與格式篩選，並透過 RAG 問答呈現回答摘要與來源片段。以下展示使用虛構文件與預設問答，供訪客直接體驗前端操作流程。</p></div>
+    </section>
+    <section class="detail-section" id="features" aria-labelledby="features-title">
+      <header><p class="eyebrow">02 / FEATURES</p><h2 id="features-title">功能與畫面</h2></header>
+      <div class="section-content">
+        <article class="feature" aria-labelledby="knowledge-base-title">
+          <h3 id="knowledge-base-title">核心功能一｜文件知識庫與 RAG 智慧問答</h3>
+          <p>透過文件清單與卡片檢視瀏覽知識庫，搭配資料夾、關鍵字、狀態及檔案格式縮小查找範圍；可管理文件標籤、下載範例文件，並在問答區查看回答與引用來源。</p>
+          <figure class="interactive-demo">
+            <div class="demo-toolbar"><span>互動展示 · 全部使用虛構資料與預設問答</span><a href="portfolio-export/knowledge-base/" target="_blank" rel="noopener">獨立開啟展示 ↗</a></div>
+            <iframe src="portfolio-export/knowledge-base/" title="文件知識庫與 RAG 智慧問答互動展示" loading="lazy" aria-describedby="knowledge-base-caption"></iframe>
+            <figcaption id="knowledge-base-caption">knowledge-base 前端畫面：文件篩選、標籤管理與 RAG 問答。AI 回答與檢索結果為預設示範內容，標籤與刪除結果保存在瀏覽器中。</figcaption>
+          </figure>
+          <dl class="summary-list feature-notes">
+            <div><dt>文件查找與整理</dt><dd>支援資料夾切換、多條件篩選、分頁及清單／卡片切換；可進行單筆或批次標籤管理，並透過確認視窗刪除展示文件。</dd></div>
+            <div><dt>問答與來源追溯</dt><dd>輸入問題後查看預設回答與 Source Chunks，核對引用檔名、片段與相似度；展示工具另提供無相關資料、錯誤及逾時等情境。</dd></div>
+          </dl>
+        </article>
+        <article class="feature" aria-labelledby="data-analysis-title">
+          <h3 id="data-analysis-title">核心功能二｜資料分析與圖表視覺化</h3>
+          <p>透過檔案選取與分析流程，查看資料筆數、欄位與缺失值等統計資訊，並切換折線圖、長條圖與圓餅圖呈現分析結果。展示採用預設範例資料，選取的檔案不會上傳，也不會解析檔案內容。</p>
+          <figure class="interactive-demo">
+            <div class="demo-toolbar"><span>互動展示 · 虛構資料與預設分析結果</span><a href="portfolio-export/data-analysis/" target="_blank" rel="noopener">獨立開啟展示 ↗</a></div>
+            <iframe src="portfolio-export/data-analysis/" title="資料分析與圖表視覺化互動展示" loading="lazy" aria-describedby="data-analysis-caption"></iframe>
+            <figcaption id="data-analysis-caption">data-analysis 前端畫面：檔案選取、統計摘要、圖表切換與分析結果儲存。加入 RAG 知識庫的操作僅將展示紀錄保存在瀏覽器中。</figcaption>
+          </figure>
+          <dl class="summary-list feature-notes">
+            <div><dt>分析流程與統計摘要</dt><dd>可載入範例或選取 CSV、XLS、XLSX 檔案，體驗分析載入與結果呈現；透過展示情境查看正常資料、多分類、缺失值及分析失敗等狀態。</dd></div>
+            <div><dt>圖表切換與結果儲存</dt><dd>以折線圖、長條圖與圓餅圖比較相同範例結果，搭配文字圖表資料與統計明細查看數據；可將分析紀錄存入瀏覽器，並體驗儲存失敗提示。</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+    <nav class="project-pagination" aria-label="其他作品"><a href="question-review.html">← 題庫整理與重複檢查工具</a><a href="projects.html">所有專案 →</a></nav>
+  </main>
+  <footer class="container"><span>我的作品集 · 持續探索，慢慢累積。</span><a href="#top">回到頂端 ↑</a></footer>
+</body>
+</html>

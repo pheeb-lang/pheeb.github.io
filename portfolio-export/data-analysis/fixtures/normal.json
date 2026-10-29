@@ -1,0 +1,90 @@
+{
+  "id": "normal",
+  "label": "正常資料",
+  "analysis_error": null,
+  "save_error": false,
+  "result": {
+    "summary": {
+      "row_count": 3,
+      "column_count": 2,
+      "missing_values": {
+        "類別": 0,
+        "件數": 0
+      }
+    },
+    "statistics": {
+      "categorical_counts": [
+        {
+          "column": "類別",
+          "counts": {
+            "文件": 1,
+            "報表": 1,
+            "手冊": 1
+          }
+        }
+      ],
+      "numeric": {
+        "column": "件數",
+        "count": 3,
+        "sum": 24,
+        "mean": 8
+      }
+    },
+    "charts": {
+      "bar": [
+        {
+          "column": "類別",
+          "title": "類別次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 1
+            },
+            {
+              "label": "報表",
+              "value": 1
+            },
+            {
+              "label": "手冊",
+              "value": 1
+            }
+          ]
+        }
+      ],
+      "pie": [
+        {
+          "column": "類別",
+          "title": "類別次數分布",
+          "data": [
+            {
+              "label": "文件",
+              "value": 1
+            },
+            {
+              "label": "報表",
+              "value": 1
+            },
+            {
+              "label": "手冊",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    "preview_data": [
+      {
+        "類別": "文件",
+        "件數": 12
+      },
+      {
+        "類別": "報表",
+        "件數": 8
+      },
+      {
+        "類別": "手冊",
+        "件數": 4
+      }
+    ]
+  }
+}

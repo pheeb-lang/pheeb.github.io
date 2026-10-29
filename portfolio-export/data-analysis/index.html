@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="./favicon.svg" />
+    <title>資料分析 Dashboard｜互動展示</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./vendor/chart.umd.js"></script>
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <main id="data-analysis-demo">
+      <header class="page-header">
+        <span class="brand">▥ &nbsp; DATA ANALYSIS</span
+        ><span class="badge">PORTFOLIO DEMO · 本地模擬</span>
+      </header>
+      <section class="card">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">Excel / CSV Analytics</p>
+            <h1>表格資料分析 Dashboard</h1>
+            <p class="muted">從表格到洞察，探索統計、視覺化與知識庫儲存流程。</p>
+          </div>
+          <button id="clear" class="secondary" type="button">清除</button>
+        </div>
+        <p class="notice">
+          本頁為互動展示：未解析檔案內容，不執行 pandas 或任意 Excel／CSV
+          分析。所有結果來自下方選取的虛構範例；檔案不會上傳。RAG 僅儲存本地紀錄，未建立向量索引。
+        </p>
+        <fieldset id="chart-modes">
+          <legend>1. 選擇圖表類型</legend>
+          <div class="modes">
+            <label
+              ><input type="radio" name="chartType" value="bar" checked /><span
+                ><strong>一般長條圖</strong><small>比較各類別的出現次數</small></span
+              ></label
+            ><label
+              ><input type="radio" name="chartType" value="stacked_bar" /><span
+                ><strong>堆疊長條圖</strong><small>合併分類並觀察累計量</small></span
+              ></label
+            ><label
+              ><input type="radio" name="chartType" value="grouped_bar" /><span
+                ><strong>群組長條圖</strong><small>對齊分類並排比較</small></span
+              ></label
+            ><label
+              ><input type="radio" name="chartType" value="pie" /><span
+                ><strong>圓餅圖</strong><small>檢視各類別的組成比例</small></span
+              ></label
+            >
+          </div>
+        </fieldset>
+        <div class="tools">
+          <div>
+            <label for="scenario"><strong>新增展示工具：切換情境</strong></label
+            ><select id="scenario">
+              <option value="normal">正常資料</option>
+              <option value="multi">多分類資料</option>
+              <option value="missing">缺失值</option>
+              <option value="empty">無圖表資料</option>
+              <option value="analysis-failure">分析失敗</option>
+              <option value="save-failure">儲存失敗</option>
+            </select>
+          </div>
+          <button id="load-sample" class="secondary" type="button">載入範例（展示工具）</button
+          ><a id="download" href="./samples/normal.csv" download>下載此情境 CSV</a>
+        </div>
+        <p id="scenario-note" class="muted">
+          正常資料：虛構文件類別次數；統計與預覽使用同一份範例。
+        </p>
+        <div id="drop-zone" class="drop-zone">
+          <span class="file-icon" aria-hidden="true">▤</span
+          ><label for="file" class="file-label">2. 拖曳檔案到這裡，或選擇檔案</label
+          ><input
+            id="file"
+            type="file"
+            accept=".xlsx,.xls,.csv"
+            aria-describedby="file-note file-status"
+          />
+          <p id="file-note" class="muted">支援 .xlsx、.xls、.csv；只驗證副檔名，未解析檔案內容。</p>
+          <p id="file-status" role="status">尚未選取檔案</p>
+          <button id="analyze" type="button" disabled>開始模擬分析</button>
+        </div>
+        <p id="error" class="error" role="alert" hidden></p>
+        <p id="status" class="notice" role="status" hidden></p>
+      </section>
+      <div id="results" hidden>
+        <section id="stats" class="stats" aria-label="資料統計"></section>
+        <section class="card">
+          <div class="heading">
+            <div>
+              <h2>加入 RAG 知識庫（本地模擬）</h2>
+              <p class="muted">保存範例報告的本地紀錄與模擬 chunks，沒有問答服務或向量索引。</p>
+            </div>
+            <button id="save" type="button" class="save">加入 RAG 知識庫</button>
+          </div>
+          <p id="save-success" class="success" role="status" hidden></p>
+          <p id="save-error" class="error" role="alert" hidden></p>
+        </section>
+        <section id="charts" class="charts" aria-label="分析圖表"></section>
+        <section class="card preview">
+          <h2>資料預覽</h2>
+          <p class="muted">顯示本地 fixture 的 preview_data；空值以「-」顯示。</p>
+          <div
+            id="preview"
+            class="table-scroll"
+            tabindex="0"
+            role="region"
+            aria-label="可橫向捲動的資料預覽"
+          ></div>
+          <details>
+            <summary>範例統計明細（statistics）</summary>
+            <pre id="statistics"></pre>
+          </details>
+        </section>
+      </div>
+      <section class="card">
+        <div class="heading">
+          <div>
+            <h2>新增展示工具：本地保存紀錄</h2>
+            <p id="records" role="status"></p>
+          </div>
+          <button id="reset-storage" type="button" class="secondary">重設本展示紀錄</button>
+        </div>
+        <p id="storage-status" role="status" class="muted"></p>
+      </section>
+      <footer>
+        虛構資料 · 無需登入 · 無後端依賴 &nbsp; <a href="./README.md">使用說明</a> ·
+        <a href="./SOURCE-MAP.md">來源對照</a>
+      </footer>
+      <noscript>請啟用 JavaScript 以操作互動展示。</noscript>
+    </main>
+  </body>
+</html>

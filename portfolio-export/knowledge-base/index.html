@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>文件知識庫 · 互動展示</title>
+    <link rel="icon" href="./assets/favicon.svg" />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./data.js"></script>
+    <script defer src="./core.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <div id="kb-demo">
+      <a class="skip" href="#main">跳至主要內容</a>
+      <aside>
+        <a class="brand" href="#documents">◇ 知識管理系統</a>
+        <nav aria-label="主要導覽">
+          <p>知識庫</p>
+          <a href="#documents">▤ 文件管理</a><a href="#tags">♧ 文件標籤管理</a
+          >
+          
+        </nav>
+        <small>PORTFOLIO DEMO<br />虛構資料 · 免登入體驗</small>
+      </aside>
+      <div class="shell">
+        <header>文件知識庫 <small>獨立互動展示</small></header>
+        <main id="main" tabindex="-1">
+          <div class="notice">
+            AI 回覆與檢索結果為模擬。文件皆為虛構範例，變更僅儲存於此瀏覽器。
+          </div>
+          <details>
+            <summary>展示工具 · 情境與重設</summary>
+            <div class="tools">
+              <label
+                >文件情境<select id="list-scenario">
+                  <option value="normal">正常清單</option>
+                  <option value="empty">無結果</option>
+                </select></label
+              ><label
+                >刪除情境<select id="delete-scenario">
+                  <option value="normal">刪除成功</option>
+                  <option value="error">刪除失敗</option>
+                </select></label
+              ><label
+                >問答情境<select id="rag-scenario">
+                  <option value="success">成功與引用</option>
+                  <option value="empty">無足夠資料</option>
+                  <option value="no-sources">回答但無引用</option>
+                  <option value="error">問答錯誤</option>
+                  <option value="timeout">問答逾時</option>
+                </select></label
+              ><button id="reset" class="danger">重設展示資料</button>
+            </div>
+            <p class="muted">問答延遲 0.7 秒，逾時情境 1.4 秒；問答及刪除情境於下一次操作生效。</p>
+          </details>
+          <div id="view"></div>
+        </main>
+        <footer>文件管理 × 知識檢索 ／ 互動作品展示</footer>
+      </div>
+      <div id="message" role="status" aria-live="polite"></div>
+      <dialog id="confirm" aria-labelledby="confirm-title" aria-describedby="confirm-text">
+        <form method="dialog">
+          <h2 id="confirm-title"></h2>
+          <p id="confirm-text"></p>
+          <div class="actions">
+            <button value="cancel" autofocus>取消</button
+            ><button value="ok" class="danger">確認</button>
+          </div>
+        </form>
+      </dialog>
+      <noscript>此互動展示需要啟用 JavaScript。</noscript>
+    </div>
+  </body>
+</html>
