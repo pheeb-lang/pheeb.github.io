@@ -16,6 +16,7 @@
       --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", serif;
     }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     html { scroll-behavior: smooth; }
     body { margin: 0; color: var(--paper); background: #293850; font-family: "Microsoft JhengHei", system-ui, sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
     a { color: inherit; }
@@ -42,9 +43,29 @@
     .now { font-family: Georgia, "Times New Roman", serif; font-size: clamp(100px, 9.5vw, 170px); font-weight: 700; line-height: 1; }
     .section { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 56px; padding-block: 56px 64px; border-top: 1px solid var(--line); scroll-margin-top: 30px; }
     h2 { margin: 16px 0 0; font-family: var(--serif); font-size: 36px; font-weight: 500; line-height: 1.4; }
-    .about-copy { max-width: 780px; }
-    .about-copy h3 { margin: 0 0 16px; font-family: var(--serif); font-size: 30px; font-weight: 500; }
-    .about-copy p { margin: 0; font-size: 18px; color: var(--muted); }
+    .about-intro { grid-column: 1 / -1; padding: 12px 0 40px; border-bottom: 1px solid var(--line); }
+    .about-intro h1 { margin: 20px 0 18px; font-size: clamp(38px, 5vw, 72px); line-height: 1.25; letter-spacing: -.02em; }
+    .about-intro h1 em { color: var(--accent); font-style: normal; }
+    .about-intro .about-description { max-width: 760px; margin: 0; color: var(--muted); font-size: clamp(16px, 1.6vw, 20px); line-height: 1.9; }
+    .career-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+    .career-sort { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border: 1px solid #ded5ca; border-radius: 999px; background: var(--paper); color: #293850; font: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; }
+    .career-sort::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #cf795d; }
+    .career-sort:hover { background: #f1e7dc; }
+    .career-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+    .career-timeline { position: relative; list-style: none; margin: 0; padding: 0; }
+    .career-timeline::before { content: ""; position: absolute; top: 12px; bottom: 28px; left: 50%; width: 1px; background: var(--line); transform: translateX(-50%); }
+    .career-entry { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr); --entry-accent: #b75d7b; }
+    .career-entry + .career-entry { margin-top: 32px; }
+    .career-entry::before { content: ""; position: absolute; top: 8px; left: 50%; width: 11px; height: 11px; border: 1px solid var(--entry-accent); border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px rgba(247, 243, 236, .09); transform: translateX(-50%); }
+    .career-entry:nth-child(even) { --entry-accent: #507e61; }
+    .career-content { grid-column: 1; min-width: 0; }
+    .career-entry:nth-child(even) .career-content { grid-column: 3; }
+    .career-date { margin: 0 0 10px; color: var(--muted); font-size: 13px; letter-spacing: .03em; text-align: right; }
+    .career-entry:nth-child(even) .career-date { text-align: left; }
+    .career-card { padding: 22px; color: #293850; background: var(--paper); border: 1px solid #ded5ca; border-left: 3px solid var(--entry-accent); border-radius: 10px; box-shadow: 0 5px 16px rgba(20, 31, 47, .15); }
+    .career-kind { display: inline-block; padding: 2px 9px; color: var(--entry-accent); border: 1px solid currentColor; border-radius: 20px; font-size: 11px; letter-spacing: .06em; }
+    .career-card h3 { margin: 12px 0 0; font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
+    .career-card h3 span { display: block; color: #596577; font-size: 16px; font-weight: 400; }
     .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
     article { padding-top: 18px; border-top: 1px solid rgba(241, 193, 177, .6); }
     .project-number { color: var(--accent); font-family: Georgia, serif; font-size: 18px; }
@@ -77,8 +98,12 @@
       .timeline-line { flex: 1; width: auto; height: 3px; margin: 0; }
       .section { grid-template-columns: 1fr; gap: 28px; padding-block: 36px 44px; }
       h2 { margin-top: 10px; font-size: 30px; }
-      .about-copy h3 { font-size: 25px; }
-      .about-copy p { font-size: 16px; }
+      .career-timeline::before { left: 7px; }
+      .career-entry { grid-template-columns: 32px minmax(0, 1fr); }
+      .career-entry::before { left: 7px; }
+      .career-content, .career-entry:nth-child(even) .career-content { grid-column: 2; }
+      .career-date { text-align: left; }
+      .career-card { padding: 20px; }
       .projects { grid-template-columns: 1fr; gap: 34px; }
       article h3 { margin-top: 16px; font-size: 25px; }
       footer { font-size: 11px; }
@@ -113,12 +138,30 @@
           <div class="now">NOW</div>
         </div>
       </section>
-      <section class="section" id="about" aria-labelledby="about-title">
-        <header><p class="eyebrow">ABOUT · 關於我</p><h2 id="about-title">從好奇開始。</h2></header>
-        <div class="about-copy">
-          <h3>你好，我是你的名字</h3>
-          <p>在這裡介紹你的專長、背景與興趣。</p>
-        </div>
+      <section class="section" id="about" aria-labelledby="about-title" hidden>
+        <header class="about-intro">
+          <p class="eyebrow">ABOUT · 關於我</p>
+          <h1 id="about-title" lang="en">Hi, I'm <em>Phoebe</em></h1>
+          <p class="about-description" lang="en">An AI developer from a non-CS background.<br>A space to document my learning journey.</p>
+        </header>
+        <header class="career-heading">
+          <p class="eyebrow">JOURNEY · 學習軌跡</p>
+          <button class="career-sort" id="career-sort" type="button" aria-controls="career-timeline" aria-label="目前最早優先，切換為最新優先"><span id="career-sort-label" aria-live="polite">最早優先</span></button>
+        </header>
+        <ol class="career-timeline" id="career-timeline" aria-label="培訓與實習經歷">
+          <li class="career-entry">
+            <div class="career-content">
+              <p class="career-date"><time datetime="2025-11">2025/11</time>–<time datetime="2026-07">2026/7</time></p>
+              <div class="career-card"><span class="career-kind">培訓</span><h3>AI新秀計畫培訓</h3></div>
+            </div>
+          </li>
+          <li class="career-entry">
+            <div class="career-content">
+              <p class="career-date"><time datetime="2026-07">2026/7</time>–<time datetime="2026-11">2026/11</time></p>
+              <div class="career-card"><span class="career-kind">實習</span><h3>AI智慧開發應用工程師<span>（實習）</span></h3></div>
+            </div>
+          </li>
+        </ol>
       </section>
       <section class="section" id="projects" aria-labelledby="projects-title">
         <header><p class="eyebrow">SELECTED WORK · 精選作品</p><h2 id="projects-title">我的作品</h2></header>
@@ -146,24 +189,36 @@
   </div>
   <script>
     const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
-    const sections = [document.querySelector('.hero'), document.getElementById('about')];
-    let scheduled = false;
-    function updateNavigation() {
-      let current = 0;
-      sections.forEach((section, index) => {
-        if (section.getBoundingClientRect().top <= window.innerHeight * .4) current = index;
-      });
-      navLinks.forEach((link, index) => {
-        if (index === current) link.setAttribute('aria-current', 'location');
+    const about = document.getElementById('about');
+    const homeSections = [document.querySelector('.hero'), document.getElementById('projects')];
+    function updateView() {
+      const showingAbout = window.location.hash === '#about';
+      about.hidden = !showingAbout;
+      homeSections.forEach(section => { section.hidden = showingAbout; });
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === (showingAbout ? '#about' : '#top')) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       });
-      scheduled = false;
+      document.title = showingAbout ? '關於我｜我的作品集' : '我的作品集';
+      if (showingAbout || window.location.hash === '#top') window.scrollTo(0, 0);
     }
-    window.addEventListener('scroll', () => {
-      if (!scheduled) { scheduled = true; requestAnimationFrame(updateNavigation); }
-    }, { passive: true });
-    window.addEventListener('resize', updateNavigation);
-    updateNavigation();
+    window.addEventListener('hashchange', updateView);
+    updateView();
+    const careerTimeline = document.getElementById('career-timeline');
+    const careerSort = document.getElementById('career-sort');
+    const careerSortLabel = document.getElementById('career-sort-label');
+    let newestFirst = false;
+    careerSort.addEventListener('click', () => {
+      newestFirst = !newestFirst;
+      const entries = Array.from(careerTimeline.children);
+      entries.sort((a, b) => {
+        const comparison = a.querySelector('time').getAttribute('datetime').localeCompare(b.querySelector('time').getAttribute('datetime'));
+        return newestFirst ? -comparison : comparison;
+      });
+      careerTimeline.append(...entries);
+      careerSortLabel.textContent = newestFirst ? '最新優先' : '最早優先';
+      careerSort.setAttribute('aria-label', newestFirst ? '目前最新優先，切換為最早優先' : '目前最早優先，切換為最新優先');
+    });
   </script>
 </body>
 </html>
