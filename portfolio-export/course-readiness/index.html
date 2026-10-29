@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>教室管理｜逐堂開課展示</title><link rel="stylesheet" href="./styles.css"><script type="module" src="./app.js"></script></head>
+<body class="course-readiness-demo"><header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">▦</span>教室管理<span class="brand-divider">/</span><span class="brand-sub">逐堂開課</span></div><span class="building-badge">展示資料</span></header>
+<main><div class="heading"><div><p class="eyebrow">CLASSROOM MANAGEMENT</p><h1>教室管理</h1><p class="intro">查看狀態 → 點選課程 → 挑選主講師 → 確認接課 → 開課檢核</p></div></div>
+<p class="muted">固定展示日期：2026/11/05–11/06 · 3 間虛構教室 · 6 堂課。從「互動網頁入門」開始體驗完整流程；所有異動只存於此瀏覽器。</p>
+        <div class="readiness-filters" role="group" aria-label="依開課狀態篩選">
+          <button type="button" data-readiness="" aria-pressed="true">全部 <span id="count-all">0</span></button>
+          <button type="button" data-readiness="primary-missing" aria-pressed="false">缺講師 <span id="count-missing">0</span></button>
+          <button type="button" data-readiness="pending" aria-pressed="false">待確認 <span id="count-pending">0</span></button>
+          <button type="button" data-readiness="conflict" aria-pressed="false">有衝突／資格待補 <span id="count-conflict">0</span></button>
+          <button type="button" data-readiness="complete" aria-pressed="false">已就緒 <span id="count-ready">0</span></button>
+        </div>
+<p id="assignment-status" class="status" role="status" aria-live="polite"></p>
+<section class="panel"><div class="table-heading"><h2 id="session-list-title">精簡課表</h2><span id="session-count" class="muted" role="status"></span></div>
+<div id="schedule" aria-labelledby="session-list-title"></div><p id="sessions-empty" class="empty" role="status" hidden>沒有符合此狀態的課程，請切換「全部」查看課表。</p></section>
+<footer>展示資料均為虛構 · 無排課衝突仍須取得講師接課同意 · 缺少資格紀錄不代表無法授課</footer></main>
+    <dialog id="assignment-dialog" aria-labelledby="assignment-title">
+      <form id="assignment-form">
+        <div class="drawer-heading"><div><p class="eyebrow">COURSE READINESS</p><h2 id="assignment-title">安排講師與開課檢核</h2></div><button id="assignment-cancel" class="secondary-button" type="button" aria-label="關閉講師安排面板">✕</button></div>
+        <p id="assignment-session" class="muted"></p>
+        <p class="drawer-scope">本次僅安排這一堂，不會更動其他堂次。</p>
+        <div class="field"><label for="primary-instructor">主講師</label><select id="primary-instructor"></select></div>
+        <section class="candidate-section" aria-labelledby="candidate-title"><h3 id="candidate-title">找可授課講師</h3>
+          <label for="candidate-query">搜尋講師姓名或專長</label><input id="candidate-query" type="search" placeholder="輸入姓名或專長" autocomplete="off">
+          <label class="drawer-checkbox"><input id="candidate-available" type="checkbox" checked>只顯示資格符合、無排課衝突的講師</label>
+          <p id="candidate-status" class="muted" role="status" aria-live="polite"></p><div id="candidate-list"></div>
+        </section>
+        <label class="drawer-checkbox"><input id="instructor-accepted" type="checkbox">已向講師確認本堂日期與時段，並取得接課同意</label>
+        <section class="readiness-section" aria-labelledby="readiness-title"><h3 id="readiness-title">本堂開課檢核</h3><ul id="readiness-checks" aria-live="polite"></ul><p class="muted">無排課衝突仍需確認接課。此處檢查授課資格、時間與教室重複預約，不含容量及設備。</p></section>
+        <p id="assignment-error" class="form-error" role="alert"></p>
+        <div class="dialog-actions"><button id="assignment-save" class="secondary-button" type="submit" value="draft">儲存安排</button><button id="assignment-open" type="submit" value="open">確認本堂開課</button></div>
+        <p class="muted">示範授課資格與本機儲存，尚未連接正式師資及開課服務。</p>
+      </form>
+    </dialog>
+
+</body></html>

@@ -1,0 +1,133 @@
+@scope (.course-readiness-demo){
+:scope{font-family:Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#21372f;background:#f5f7f4;font-synthesis:none;--accent:#23714e;--muted:#6b7a72;--line:#e2e8e2}
+*{box-sizing:border-box}
+:scope{margin:0}
+.topbar{height:76px;padding:0 5vw;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:13px;font-weight:700}
+.brand-icon{background:#e8f0e9;color:var(--accent);padding:6px 10px;font-size:25px;border-radius:10px}
+.brand-divider{color:#b8c1ba;font-weight:400}
+.brand-sub{font-size:14px;font-weight:400;color:var(--muted)}
+.building-badge{font-size:12px;background:#edf3eb;color:#436443;border:1px solid #dce7d9;padding:8px 12px;border-radius:20px}
+main{max-width:1280px;margin:auto;padding:48px 32px 20px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px}
+.eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:var(--accent);margin:0 0 12px}
+h1{font-size:clamp(25px,3vw,36px);letter-spacing:-1px;margin:0 0 12px}
+h2{font-size:17px;margin:0 0 18px}
+.intro{color:var(--muted);font-size:14px;margin:0}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:26px}
+.field{flex:1;max-width:320px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:9px}
+input{font:inherit;width:100%;min-height:47px;border:1px solid #ced9cf;border-radius:8px;background:#fff;padding:10px 12px;color:#21372f}
+button{font:inherit;min-height:47px;border:0;border-radius:8px;padding:11px 23px;background:var(--accent);color:white;cursor:pointer;display:flex;align-items:center;gap:20px}
+button:hover{background:#185c3d}
+button:disabled{opacity:.65;cursor:wait}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+.status{font-size:14px;color:var(--muted);padding:28px 0;line-height:1.7}
+.status.error{color:#a32929;background:#fff0ed;border:1px solid #f3d1ca;border-radius:10px;padding:16px;margin:24px 0}
+.muted{font-size:12px;color:var(--muted);line-height:1.8}
+details{font-size:12px;line-height:1.8}
+summary{cursor:pointer;color:var(--accent)}
+.table-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.table-heading h2{margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+th{font-weight:500;color:var(--muted);background:#f7f9f6}
+th,td{padding:16px 15px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+td{font-variant-numeric:tabular-nums}
+td:last-child{font-weight:600;color:var(--accent)}
+.empty{text-align:center;color:var(--muted);padding:28px;font-size:14px}
+footer{color:#88958b;text-align:center;font-size:11px;padding:30px 0;line-height:1.8}
+[hidden]{display:none!important}
+@media(max-width:850px){
+.heading{align-items:flex-start;gap:20px}
+.field{max-width:none}
+}
+@media(max-width:520px){
+main{padding:30px 16px 15px}
+.topbar{height:65px;padding:0 16px}
+.brand{gap:8px;font-size:14px}
+.brand-sub,.brand-divider{display:none}
+.building-badge{font-size:11px}
+.panel{padding:20px}
+.field{flex-basis:100%}
+}
+.schedule-session{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;min-height:168px;padding:14px;border-radius:0;background:#286ba6;color:#fff;text-align:left;line-height:1.5;overflow-wrap:anywhere}
+.schedule-session:hover{background:#205987}
+.schedule-session:focus-visible{outline:3px solid #155d99;outline-offset:-4px}
+.schedule-session+.schedule-session{border-top:1px dashed #356b9d}
+.session-time{font-size:12px;color:#fff;font-variant-numeric:tabular-nums}
+.session-title{font-size:15px}
+.session-class,.session-instructors{font-size:12px}
+.session-lesson{font-size:11px;color:#fff}
+.schedule-session .assignment-badge{font-size:11px;padding:3px 8px}
+select{font:inherit;width:100%;min-height:47px;border:1px solid #ced9cf;border-radius:8px;background:#fff;padding:10px 12px;color:#21372f}
+select:focus-visible{outline:3px solid #b0ceba;outline-offset:3px}
+.assignment-badge{display:inline-block;font-size:11px;padding:6px 10px;border-radius:20px}
+.assignment-badge.complete{background:#eaf2e7;color:var(--accent)}
+.assignment-badge.primary-missing{background:#fff0ed;color:#a32929}
+.secondary-button{background:#f3f7f2;color:var(--accent);border:1px solid #d7e3d6}
+.secondary-button:hover{background:#e3ede0}
+dialog{width:min(520px,calc(100% - 32px));padding:28px;border:1px solid var(--line);border-radius:16px;color:#21372f;box-shadow:0 20px 80px #142f2933}
+dialog::backdrop{background:#172d2666}
+dialog .field{max-width:none;margin-top:20px}
+dialog h2{margin-bottom:10px}
+#assignment-session{margin:0;overflow-wrap:anywhere}
+.dialog-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+.form-error{color:#a32929;font-size:13px;line-height:1.7;min-height:22px;margin:16px 0 0}
+#assignment-status:empty{display:none}
+@media(max-width:520px){
+dialog{padding:22px}
+}
+.readiness-filters{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.readiness-filters button{background:#f1f5f8;color:#29475e;border:1px solid #d5e0e8;font-size:13px;padding:9px 13px;gap:8px}
+.readiness-filters button[aria-pressed="true"]{background:#194f79;color:#fff;border-color:#194f79}
+.readiness-filters span{font-variant-numeric:tabular-nums}
+.assignment-badge.pending{background:#fff2cd;color:#785400}
+.assignment-badge.conflict{background:#ffe2de;color:#972b23}
+#assignment-dialog{position:fixed;inset:0 0 0 auto;margin:0;width:min(560px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;border:0;border-left:1px solid #d5e0e8;border-radius:0;padding:0;overflow-y:auto;background:#fff}
+#assignment-form{padding:28px;display:block}
+.drawer-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.drawer-heading h2{font-size:23px}
+.drawer-heading .eyebrow{margin-top:0}
+.drawer-heading button{padding:8px 12px;min-height:36px}
+.drawer-scope{background:#edf4fa;border-left:3px solid #286ba6;padding:12px;font-size:13px}
+.candidate-section,.readiness-section{margin-top:24px;padding-top:20px;border-top:1px solid #dce5eb}
+.candidate-section h3,.readiness-section h3{font-size:16px;margin:0 0 16px}
+#candidate-query{width:100%;box-sizing:border-box}
+.drawer-checkbox{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.7;margin:18px 0}
+.drawer-checkbox input[type=checkbox]{flex:none;min-height:0;width:18px;height:18px;margin:2px 0 0;accent-color:#286ba6}
+.candidate-card{background:#f7fafc;border:1px solid #dce5eb;border-radius:10px;padding:16px;margin-top:10px}
+.candidate-card strong{font-size:14px}
+.candidate-card p{font-size:12px;line-height:1.7;color:#536778;margin:8px 0 12px}
+.candidate-card button{min-height:34px;padding:7px 12px;font-size:12px}
+#readiness-checks{list-style:none;padding:0;margin:0}
+#readiness-checks li{font-size:13px;line-height:1.7;padding:10px 12px;margin-bottom:8px;border-radius:6px;overflow-wrap:anywhere}
+.check-pass{background:#edf6ef;color:#25603c}
+.check-pending{background:#fff5e7;color:#81551c}
+#assignment-form .dialog-actions{position:sticky;bottom:-28px;background:#fff;padding:16px 0;border-top:1px solid #e1e8ed;display:flex;flex-wrap:wrap}
+button:disabled{opacity:.5;cursor:not-allowed}
+:scope:has(#assignment-dialog[open]){overflow:hidden}
+@media(max-width:520px){
+#assignment-form{padding:20px}
+.drawer-heading h2{font-size:20px}
+#assignment-form .dialog-actions{bottom:-20px}
+.dialog-actions button{flex:1;justify-content:center}
+}
+main{padding-top:28px}
+.heading{margin-bottom:16px}
+.status{padding:6px 0}
+.panel{padding:20px}
+.demo-day+.demo-day{margin-top:24px}
+.demo-day h3{background:#569bd0;color:#fff;padding:12px;margin:0;font-size:14px}
+.demo-rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid #356b9d}
+.demo-room{min-width:0;border-right:1px solid #356b9d;border-bottom:1px solid #356b9d;background:#fff}
+.demo-room h4{margin:0;padding:12px;background:#ededed;color:#0085b6;font-size:13px;font-weight:500}
+.demo-room .schedule-session{min-height:0;gap:6px}
+.demo-room .schedule-session+.schedule-session{border-top:1px solid #d5e0e8}
+@media(max-width:650px){
+.demo-rooms{grid-template-columns:1fr}
+.heading{display:block}
+.intro{line-height:1.8}
+.readiness-filters button{flex-grow:1;justify-content:center}
+}
+}
